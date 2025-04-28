@@ -30,7 +30,15 @@ const UserSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  watchlist: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Title'
+  }],
+  readingList: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Title'
+  }]
 }, {
   // Add virtual properties when converting to JSON
   toJSON: { virtuals: true },
