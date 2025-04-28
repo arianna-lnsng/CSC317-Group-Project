@@ -1,14 +1,13 @@
-<<<<<<< HEAD
 # Ink & Frame - Book and Movie Review Platform
 
-## Project Overview
-Ink & Frame is a full-stack web application where users can explore, rate, and review books and movies. It combines a responsive frontend with an Express.js backend and MongoDB database, focusing on real-world CRUD functionality.
+## Overview
+Ink & Frame is a full-stack web application where users can explore, rate, and review books and movies. Built for the CSC317 final group assignment, it combines a clean, responsive frontend with an Express.js backend and a MongoDB database, focusing on real-world CRUD functionality.
 
 ## Team Members and Roles
-- **Cielina Maree Lubrino** (Frontend Lead): Builds page layouts using standard HTML and CSS, ensures all pages are responsive on mobile and desktop
-- **Rama Harish Varma Vegesna** (UI/UX & Interactivity): Handles form validation, interactive features like star rating, and improves overall usability using JavaScript
-- **Damian Perez** (Backend Lead): Implements routes using Express.js, manages server-side validation, and handles storing/retrieving reviews and ratings
-- **Arianna Lansang** (Data & Coordination): Seeds the app with starter data, manages database structure, and documents team progress and testing plans
+- **Cielina Maree Lubrino** (Frontend Lead): Builds page layouts using standard HTML and CSS; ensures all pages are responsive on mobile and desktop.
+- **Rama Harish Varma Vegesna** (UI/UX & Interactivity): Handles form validation, interactive features like star rating, and improves overall usability using JavaScript.
+- **Damian Perez** (Backend Lead): Implements routes using Express.js, manages server-side validation, and handles storing/retrieving reviews and ratings.
+- **Arianna Lansang** (Data & Coordination): Seeds the app with starter data, manages the database structure, and documents team progress and testing plans.
 
 ## Setup Instructions
 
@@ -17,132 +16,140 @@ Ink & Frame is a full-stack web application where users can explore, rate, and r
 - MongoDB (v4.4 or higher)
 
 ### Installation
-1. Clone the repository
-   ```
+1. Clone the repository:
+   ```bash
    git clone [repository-url]
    cd CSC317-Group-Project
    ```
 
-2. Install dependencies
-   ```
+2. Install dependencies:
+   ```bash
    npm install
    ```
 
-3. Create a .env file in the root directory with the following content:
-   ```
+3. Create a `.env` file in the root directory with the following content:
+   ```env
    MONGODB_URI=mongodb://localhost:27017/ink_and_frame
    SESSION_SECRET=your_secure_session_key
    ```
 
-4. Seed the database with initial data
-   ```
+4. Seed the database with initial data:
+   ```bash
    node utils/seeders/seed.js
    ```
 
-5. Start the development server
-   ```
+5. Start the development server:
+   ```bash
    npm run dev
    ```
 
-6. Open your browser and navigate to http://localhost:3000
+6. Open your browser and navigate to:  
+   `http://localhost:3000`
 
 ## Features
-- Add books or movies with title, image, genre, and release year
-- Browse titles in a card-style layout
-- Rate titles from 1-5 stars with average ratings displayed
-- Write, edit, and delete reviews with timestamps and usernames
-- View title suggestions based on genre
-- Search titles by name
-- Filter results by genre or minimum rating
-- Maintain personal watchlist or reading list
-- User authentication
+
+### Title Listings
+- Add books or movies with a title, image, genre, and release year.
+- Browse all titles in a card-style layout.
+
+### Ratings (1–5 Stars)
+- Rate any title from 1 to 5 stars.
+- Display average rating per title.
+
+### Write & Edit Reviews
+- Post reviews with a title and content.
+- Edit or delete your own reviews.
+- Reviews are timestamped and linked to usernames.
+
+### Title Suggestions
+- View related titles from the same genre.
+
+### Search & Filter
+- Search titles by name.
+- Filter titles by genre or minimum rating.
+
+### Watchlist / Reading List
+- Save titles to personal watchlists or reading lists.
+- Manage saved titles (add/remove).
+- Requires user authentication.
+
+## Directory Structure
+//TODO 
 
 ## Backend API Documentation
 
-## Models
+### Models
 
-### Title
-Represents a book or movie in the system.
-- `name` (String, required): Name of the title
-- `type` (String, required): Either 'book' or 'movie'
-- `imageUrl` (String, required): URL to the title's image
-- `genre` (String, required): Genre of the title
-- `releaseYear` (Number, required): Year the title was released
-- `averageRating` (Number): Average user rating (1-5)
-- `totalRatings` (Number): Total number of ratings
+#### Title
+Represents a book or movie.
+//TODO
 
-### Review
+#### Review
 User reviews for titles.
-- `titleId` (ObjectId, required): Reference to the Title
-- `userId` (ObjectId, required): Reference to the User
-- `reviewTitle` (String, required): Heading for the review
-- `content` (String): Main review text
-- `rating` (Number, required): Rating from 1-5
-- `createdAt` (Date): Timestamp of review creation
+//TODO
 
-### Rating
+#### Rating
 Separate ratings for titles.
-- `titleId` (ObjectId, required): Reference to the Title
-- `userId` (ObjectId, required): Reference to the User
-- `rating` (Number, required): Rating from 1-5
+//TODO
 
-### User
+#### User
 Extended with lists functionality.
-- Standard user fields (username, email, password)
-- `watchlist` (Array of ObjectIds): References to Titles
-- `readingList` (Array of ObjectIds): References to Titles
+//TODO
 
 ## API Endpoints
 
 ### Titles
-- `GET /api/titles`: Get all titles
-  - Query params: genre, minRating, type, search
+- `GET /api/titles`: Get all titles (supports query parameters: genre, minRating, type, search)
 - `GET /api/titles/:id`: Get a specific title
-- `GET /api/titles/:id/similar`: Get similar titles (same genre)
-- `POST /api/titles`: Create a new title (auth required)
-- `PUT /api/titles/:id`: Update a title (auth required)
-- `DELETE /api/titles/:id`: Delete a title (auth required)
+- `GET /api/titles/:id/similar`: Get similar titles based on genre
+- `GET /api/titles/:id/reviews`: Get all reviews for a specific title
+- `GET /api/titles/:id/ratings`: Get rating statistics for a specific title
+- `POST /api/titles`: Create a new title (authentication required)
+- `PUT /api/titles/:id`: Update a title (authentication required)
+- `DELETE /api/titles/:id`: Delete a title (authentication required)
 
 ### Reviews
-- `GET /reviews`: Get all reviews
-- `GET /reviews/:id`: Get a specific review
-- `POST /reviews`: Create a new review (auth required)
-- `PUT /reviews/:id`: Update a review (auth owner only)
-- `DELETE /reviews/:id`: Delete a review (auth owner only)
+- `GET /api/reviews`: Get all reviews
+- `GET /api/reviews/:id`: Get a specific review
+- `POST /api/reviews`: Create a new review (authentication required)
+- `PUT /api/reviews/:id`: Update a review (owner only)
+- `DELETE /api/reviews/:id`: Delete a review (owner only)
 
 ### Ratings
-- `POST /api/ratings`: Rate a title (auth required)
-- `GET /api/ratings/:titleId`: Get user's rating for a title (auth required)
-- `DELETE /api/ratings/:titleId`: Remove a rating (auth required)
+- `POST /api/ratings`: Submit a rating for a title (authentication required)
+- `GET /api/ratings/user/:titleId`: Get the user's rating for a specific title (authentication required)
+- `GET /api/ratings/title/:titleId`: Get average rating for a specific title
+- `GET /api/ratings/title/:titleId/all`: Get all ratings for a title with distribution data
+- `DELETE /api/ratings/:titleId`: Remove a user's rating for a title (authentication required)
 
 ### Lists
-- `POST /api/lists/add`: Add title to watchlist/readingList (auth required)
-  - Body: `{ titleId, listType }`
-- `POST /api/lists/remove`: Remove title from list (auth required)
-  - Body: `{ titleId, listType }`
-- `GET /api/lists/:listType`: Get user's watchlist or readingList (auth required)
-
+- `POST /api/lists/add`: Add a title to a watchlist or reading list (authentication required)
+- `POST /api/lists/remove`: Remove a title from a list (authentication required)
+- `GET /api/lists/:listType`: Get user's watchlist or reading list (authentication required)
+- `GET /api/lists/check/:listType/:titleId`: Check if a title is in a user's list (authentication required)
+  
 ## Authentication
-All routes marked with "auth required" need a valid session (req.session.userId).
-The following middleware is used:
-- `isAuthenticated`: Ensures user is logged in
-- Owner-only operations check if the logged-in user owns the resource
+Routes marked with "(authentication required)" require a valid session (`req.session.userId`).
+
+Authentication Middleware:
+- `isAuthenticated`: Ensures a user is logged in
+- Owner-only checks: Ensure user owns the resource before updating or deleting
 
 ## Data Validation
-- Title validation includes required fields and proper formats
-- Ratings must be between 1-5
-- Reviews require a title and valid rating
-- List operations validate the list type ('watchlist' or 'readingList')
+- Titles must include required fields and correct formats.
+- Ratings must be between 1 and 5.
+- Reviews must have a title and valid rating.
+- Lists must use valid list types (`watchlist` or `readingList`).
 
 ## Error Handling
-All endpoints follow a consistent error response format:
+All API responses use a consistent error format:
 ```json
 {
   "error": "Error message here"
 }
 ```
 
-Common status codes:
+Common HTTP Status Codes:
 - 200: Success
 - 201: Created
 - 400: Bad Request
@@ -150,67 +157,3 @@ Common status codes:
 - 403: Forbidden
 - 404: Not Found
 - 500: Internal Server Error
-=======
-# Ink & Frame - Review Film & Books
-
-## Overview
-Ink & Frame is a full-stack web application where users can explore, rate, and review books and movies. This project is built for the CSC317 final group assignment to apply everything we've learned about web software development. It combines a clean, responsive frontend with an Express.js backend and focuses on building real-world CRUD functionality.
-
-## Features
-
-### Title Listings
-- Add new books or movies to the app with a title, image, genre, and release year.
-- Browse all submitted titles in a card-style layout.
-
-### Ratings (1–5 Stars)
-- Users can rate any title from 1 to 5 stars.
-- Each title displays its average rating.
-
-### Write & Edit Reviews
-- Users can post reviews on any book or film.
-- Reviews are saved with a timestamp and username.
-- Users can edit or delete their own reviews.
-
-### Title Suggestions
-- When viewing a title, users are shown other titles from the same genre.
-- Helps explore related content easily.
-
-### Search & Filter
-- Users can search by title name.
-- Filter by genre or minimum rating to narrow down results.
-
-### Watchlist / Reading List ✨
-- Logged-in users can add titles to a personal watchlist or reading list.
-- Each user can view and manage their saved titles in a separate section.
-- Titles can be easily removed from the list.
-- Requires user authentication and a many-to-many relationship between users and titles.
-
-## Team Roles
-
-| Name            | Role                   | Description                                                                 |
-|-----------------|------------------------|-----------------------------------------------------------------------------|
-| Cielina Maree Lubrino        | Frontend Lead          | Builds the page layout using standard HTML and CSS. Ensures all pages are responsive on mobile and desktop. |
-| Rama Harish Varma Vegesna        | UI/UX & Interactivity  | Handles form validation, interactive features like star rating, and improves overall usability using JavaScript. |
-| Damian Perez         | Backend Lead           | Implements routes using Express.js, manages server-side validation, and handles storing/retrieving reviews and ratings. |
-| Arianna Lansang        | Data & Coordination    | Seeds the app with starter data, manages the database structure, and documents team progress and testing plans. |
-
-## Directory Structure
-```
-assignments/
-└── assignment-5/
-├── app.js
-├── package.json
-├── public/
-│   ├── css/
-│   ├── js/
-│   └── images/
-├── routes/
-│   └── api/
-├── views/
-├── middleware/
-├── models/
-├── config/
-├── utils/
-└── README.md
-```
->>>>>>> 8e4323e612bdde136ba99386e3277d943810c43e
