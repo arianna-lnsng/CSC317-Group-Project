@@ -1,7 +1,7 @@
-# Ink & Frame - Book and Movie Review Platform
+# After the Credits - Your Digital Film Community
 
 ## Overview
-Ink & Frame is a full-stack web application where users can explore, rate, and review books and movies. Built for the CSC317 final group assignment, it combines a clean, responsive frontend with an Express.js backend and a MongoDB database, focusing on real-world CRUD functionality.
+*After the Credits* is a dynamic film review platform where cinephiles can discover, rate, and discuss their favorite films. Built for the CSC317 final group assignment, it combines a modern, responsive frontend with an Express.js backend and MongoDB database, creating an immersive space for film enthusiasts.
 
 ## Team Members and Roles
 - **Cielina Maree Lubrino** (Frontend Lead): Builds page layouts using standard HTML and CSS; ensures all pages are responsive on mobile and desktop.
@@ -12,7 +12,7 @@ Ink & Frame is a full-stack web application where users can explore, rate, and r
 ## Setup Instructions
 
 ### Prerequisites
-- Node.js (v14 or higher)
+- Node.js (v18 or higher)
 - MongoDB (v4.4 or higher)
 
 ### Installation
@@ -29,7 +29,7 @@ Ink & Frame is a full-stack web application where users can explore, rate, and r
 
 3. Create a `.env` file in the root directory with the following content:
    ```env
-   MONGODB_URI=mongodb://localhost:27017/ink_and_frame
+   MONGODB_URI=mongodb://localhost:27017/after_the_credits
    SESSION_SECRET=your_secure_session_key
    ```
 
@@ -48,60 +48,111 @@ Ink & Frame is a full-stack web application where users can explore, rate, and r
 
 ## Features
 
-### Title Listings
-- Add books or movies with a title, image, genre, and release year.
-- Browse all titles in a card-style layout.
+### Film Reviews
+- Add and discover films with comprehensive details including director, duration, genre, and release year
+- Browse films in an elegant card-style layout
+- Share your thoughts on films after watching them
 
 ### Ratings (1–5 Stars)
-- Rate any title from 1 to 5 stars.
-- Display average rating per title.
+- Rate any film from 1 to 5 stars.
+- Display average rating per film.
 
 ### Write & Edit Reviews
 - Post reviews with a title and content.
 - Edit or delete your own reviews.
 - Reviews are timestamped and linked to usernames.
 
-### Title Suggestions
-- View related titles from the same genre.
+### Discover More
+- Get personalized film suggestions based on genre, director, or similar themes
+- Explore curated collections and trending discussions
 
 ### Search & Filter
-- Search titles by name.
-- Filter titles by genre or minimum rating.
+- Search films by title or director.
+- Filter films by genre, year, or minimum rating.
 
-### Watchlist / Reading List
-- Save titles to personal watchlists or reading lists.
-- Manage saved titles (add/remove).
+### Watchlist
+- Save films to personal watchlist.
+- Manage saved films (add/remove).
 - Requires user authentication.
 
 ## Directory Structure
-//TODO 
+```
+├── controllers/        # Route handlers and business logic
+├── models/            # MongoDB schema definitions
+├── public/            # Static files (CSS, client-side JS)
+├── routes/            # Express route definitions
+│   └── api/          # API route handlers
+├── utils/            # Helper functions and utilities
+│   └── seeders/     # Database seeding scripts
+├── views/            # EJS templates
+├── app.js            # Main application entry point
+└── package.json      # Project dependencies and scripts
+```
 
 ## Backend API Documentation
 
 ### Models
 
 #### Title
-Represents a book or movie.
-//TODO
+Represents a film in the database.
+```javascript
+{
+  name: String,          // Film title
+  director: String,      // Film director
+  duration: Number,      // Length in minutes
+  imageUrl: String,      // Poster image URL
+  genre: String,         // Film genre
+  releaseYear: Number,   // Year of release
+  averageRating: Number, // Calculated average rating
+  totalRatings: Number,  // Number of ratings received
+  keywords: [String]     // Related keywords/tags
+}
+```
 
 #### Review
-User reviews for titles.
-//TODO
+User-submitted reviews for films.
+```javascript
+{
+  titleId: ObjectId,     // Reference to the film
+  userId: ObjectId,      // User who wrote the review
+  reviewTitle: String,   // Review headline
+  content: String,       // Review content
+  rating: Number,        // Rating (1-5)
+  createdAt: Date,       // Review submission date
+  updatedAt: Date        // Last modification date
+}
+```
 
 #### Rating
-Separate ratings for titles.
-//TODO
+Stand-alone ratings for films.
+```javascript
+{
+  userId: ObjectId,      // User who rated
+  titleId: ObjectId,     // Film that was rated
+  rating: Number,        // Rating value (1-5)
+  createdAt: Date        // Rating submission date
+}
+```
 
 #### User
-Extended with lists functionality.
-//TODO
+User account with watchlist functionality.
+```javascript
+{
+  username: String,      // Unique username
+  email: String,         // User's email
+  password: String,      // Hashed password
+  watchlist: [ObjectId], // Films to watch
+  filmsWatched: Number,  // Count of films marked as watched
+  createdAt: Date        // Account creation date
+}
+```
 
 ## API Endpoints
 
-### Titles
-- `GET /api/titles`: Get all titles (supports query parameters: genre, minRating, type, search)
-- `GET /api/titles/:id`: Get a specific title
-- `GET /api/titles/:id/similar`: Get similar titles based on genre
+### Films
+- `GET /api/titles`: Get all films (supports query parameters: genre, director, minRating, search)
+- `GET /api/titles/:id`: Get a specific film
+- `GET /api/titles/:id/similar`: Get similar films based on genre or director
 - `GET /api/titles/:id/reviews`: Get all reviews for a specific title
 - `GET /api/titles/:id/ratings`: Get rating statistics for a specific title
 - `POST /api/titles`: Create a new title (authentication required)
@@ -123,10 +174,10 @@ Extended with lists functionality.
 - `DELETE /api/ratings/:titleId`: Remove a user's rating for a title (authentication required)
 
 ### Lists
-- `POST /api/lists/add`: Add a title to a watchlist or reading list (authentication required)
-- `POST /api/lists/remove`: Remove a title from a list (authentication required)
-- `GET /api/lists/:listType`: Get user's watchlist or reading list (authentication required)
-- `GET /api/lists/check/:listType/:titleId`: Check if a title is in a user's list (authentication required)
+- `POST /api/lists/add`: Add a film to watchlist (authentication required)
+- `POST /api/lists/remove`: Remove a film from watchlist (authentication required)
+- `GET /api/lists/watchlist`: Get user's watchlist (authentication required)
+- `GET /api/lists/check/watchlist/:titleId`: Check if a film is in user's watchlist (authentication required)
   
 ## Authentication
 Routes marked with "(authentication required)" require a valid session (`req.session.userId`).
@@ -139,7 +190,7 @@ Authentication Middleware:
 - Titles must include required fields and correct formats.
 - Ratings must be between 1 and 5.
 - Reviews must have a title and valid rating.
-- Lists must use valid list types (`watchlist` or `readingList`).
+- Lists must use valid list type (`watchlist`).
 
 ## Error Handling
 All API responses use a consistent error format:

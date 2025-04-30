@@ -1,7 +1,7 @@
 {
-  "name": "user-authentication-template",
+  "name": "after-the-credits",
   "version": "1.0.0",
-  "description": "A starter template for web applications with user authentication",
+  "description": "A dynamic film review platform where cinephiles gather to discuss and rate films after the credits roll",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -9,10 +9,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "authentication",
+    "film-reviews",
+    "movies",
+    "cinema",
     "express",
-    "mongodb",
-    "starter-template"
+    "mongodb"
   ],
   "author": "",
   "license": "ISC",

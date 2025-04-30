@@ -3,14 +3,18 @@ const mongoose = require('mongoose');
 const titleSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Title name is required'],
+    required: [true, 'Film title is required'],
     trim: true
   },
-  type: {
+  director: {
     type: String,
-    required: true,
-    enum: ['book', 'movie'],
-    lowercase: true
+    required: [true, 'Director name is required'],
+    trim: true
+  },
+  duration: {
+    type: Number,
+    required: [true, 'Film duration (in minutes) is required'],
+    min: 1
   },
   imageUrl: {
     type: String,

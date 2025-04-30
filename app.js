@@ -19,7 +19,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ink_and_frame')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/after_the_credits')
   .then(() => console.log('MongoDB connected successfully'))
   .catch(err => {
     console.error('MongoDB connection error:', err);
@@ -65,16 +65,12 @@ app.use((req, res, next) => {
 
 // Define routes
 app.get('/', (req, res) => {
-  res.render('index', { title: 'Ink & Frame - Home' });
+  res.render('index', { title: 'After the Credits - Home' });
 });
 
-// Books and movies routes
-app.get('/books', (req, res) => {
-  res.render('books', { title: 'Books' });
-});
-
-app.get('/movies', (req, res) => {
-  res.render('movies', { title: 'Movies' });
+// Films route
+app.get('/films', (req, res) => {
+  res.render('films', { title: 'Films' });
 });
 
 // API endpoints for titles
@@ -115,13 +111,11 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
 
-//Routes for book,movies,titles,and user
-const bookRoutes = require('./routes/books');
-const movieRoutes = require('./routes/movies');
+//Routes for films and user
+const filmRoutes = require('./routes/films');
 const titleRoutes = require('./routes/titles');
 const userRoutes = require('./routes/user');
 
-app.use('/books', bookRoutes);
-app.use('/movies', movieRoutes);
+app.use('/films', filmRoutes);
 app.use('/titles', titleRoutes);
 app.use('/user', userRoutes);

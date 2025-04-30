@@ -30,25 +30,20 @@ exports.addToList = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Add to appropriate list if not already present
-    const alreadyInList = user[listType].some(id => id.toString() === titleId);
+    // Add to watchlist if not already present
+    const alreadyInList = user.watchlist.some(id => id.toString() === titleId);
     
     if (!alreadyInList) {
-      user[listType].push(titleId);
-      // Increment the relevant counter
-      if (listType === 'watchlist') {
-        user.moviesWatched += 1;
-      } else if (listType === 'readingList') {
-        user.booksRead += 1;
-      }
+      user.watchlist.push(titleId);
+      user.filmsWatched += 1;
       await user.save();
       res.json({ 
-        message: `Title added to ${listType === 'watchlist' ? 'watchlist' : 'reading list'} successfully`,
+        message: 'Film added to watchlist successfully',
         inList: true
       });
     } else {
       res.json({ 
-        message: `Title is already in your ${listType === 'watchlist' ? 'watchlist' : 'reading list'}`,
+        message: 'Film is already in your watchlist',
         inList: true
       });
     }
@@ -79,27 +74,23 @@ exports.removeFromList = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Check if title is in the list
-    const wasInList = user[listType].some(id => id.toString() === titleId);
+    // Check if film is in the watchlist
+    const wasInList = user.watchlist.some(id => id.toString() === titleId);
     
-    // Remove from appropriate list
-    user[listType] = user[listType].filter(id => id.toString() !== titleId);
+    // Remove from watchlist
+    user.watchlist = user.watchlist.filter(id => id.toString() !== titleId);
 
-    // Decrement the relevant counter
+    // Decrement the counter if it was in the list
     if (wasInList) {
-      if (listType === 'watchlist') {
-        user.moviesWatched -= 1;
-      } else if (listType === 'readingList') {
-        user.booksRead -= 1;
-      }
+      user.filmsWatched -= 1;
     }
     
     await user.save();
 
     res.json({ 
       message: wasInList ? 
-        `Title removed from ${listType === 'watchlist' ? 'watchlist' : 'reading list'} successfully` : 
-        `Title was not in your ${listType === 'watchlist' ? 'watchlist' : 'reading list'}`,
+        'Film removed from watchlist successfully' : 
+        'Film was not in your watchlist',
       inList: false
     });
   } catch (error) {
@@ -117,10 +108,10 @@ exports.getList = async (req, res) => {
     const { listType } = req.params;
     const userId = req.session.userId;
 
-    // Get user's list with populated title data
+    // Get user's watchlist with populated film data
     const user = await User.findById(userId).populate({
-      path: listType,
-      select: 'name type imageUrl genre releaseYear averageRating totalRatings'
+      path: 'watchlist',
+      select: 'name director duration imageUrl genre releaseYear averageRating totalRatings'
     });
     
     if (!user) {

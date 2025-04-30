@@ -35,15 +35,7 @@ const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Title'
   }],
-  readingList: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Title'
-  }], 
-  moviesWatched: {
-    type: Number,
-    default: 0
-  },
-  booksRead: {
+  filmsWatched: {
     type: Number,
     default: 0
   }

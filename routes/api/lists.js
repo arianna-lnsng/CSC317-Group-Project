@@ -1,6 +1,6 @@
 /**
- * API Routes for User Lists (Watchlist and Reading List)
- * Handles all list-related API endpoints
+ * API Routes for User Watchlist
+ * Handles all watchlist-related API endpoints
  */
 
 const express = require('express');
@@ -16,40 +16,31 @@ router.use(isAuthenticated);
 const validateListOperation = [
   body('titleId')
     .notEmpty()
-    .withMessage('Title ID is required'),
-  body('listType')
-    .isIn(['watchlist', 'readingList'])
-    .withMessage('List type must be either watchlist or readingList')
+    .withMessage('Film ID is required')
 ];
 
-// Add a title to a list (watchlist or reading list)
+// Add a film to watchlist
 router.post('/add',
   validateListOperation,
   listController.addToList
 );
 
-// Remove a title from a list
+// Remove a film from watchlist
 router.post('/remove',
   validateListOperation,
   listController.removeFromList
 );
 
-// Get all titles in a specific list
-router.get('/:listType',
-  param('listType')
-    .isIn(['watchlist', 'readingList'])
-    .withMessage('List type must be either watchlist or readingList'),
+// Get all films in watchlist
+router.get('/watchlist',
   listController.getList
 );
 
-// Check if a title is in a user's list
-router.get('/check/:listType/:titleId',
-  param('listType')
-    .isIn(['watchlist', 'readingList'])
-    .withMessage('List type must be either watchlist or readingList'),
+// Check if a film is in user's watchlist
+router.get('/check/watchlist/:titleId',
   param('titleId')
     .notEmpty()
-    .withMessage('Title ID is required'),
+    .withMessage('Film ID is required'),
   listController.checkTitleInList
 );
 
