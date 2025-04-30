@@ -35,6 +35,12 @@ exports.addToList = async (req, res) => {
     
     if (!alreadyInList) {
       user[listType].push(titleId);
+      // Increment the relevant counter
+      if (listType === 'watchlist') {
+        user.moviesWatched += 1;
+      } else if (listType === 'readingList') {
+        user.booksRead += 1;
+      }
       await user.save();
       res.json({ 
         message: `Title added to ${listType === 'watchlist' ? 'watchlist' : 'reading list'} successfully`,
@@ -78,6 +84,16 @@ exports.removeFromList = async (req, res) => {
     
     // Remove from appropriate list
     user[listType] = user[listType].filter(id => id.toString() !== titleId);
+
+    // Decrement the relevant counter
+    if (wasInList) {
+      if (listType === 'watchlist') {
+        user.moviesWatched -= 1;
+      } else if (listType === 'readingList') {
+        user.booksRead -= 1;
+      }
+    }
+    
     await user.save();
 
     res.json({ 

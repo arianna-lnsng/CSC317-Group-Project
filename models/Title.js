@@ -38,6 +38,11 @@ const titleSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  keywords: [{
+    type: String,
+    trim: true,
+    lowercase: true
+  }],
   createdAt: {
     type: Date,
     default: Date.now

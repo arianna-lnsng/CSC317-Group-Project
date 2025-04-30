@@ -38,8 +38,16 @@ const UserSchema = new mongoose.Schema({
   readingList: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Title'
-  }]
-}, {
+  }], 
+  moviesWatched: {
+    type: Number,
+    default: 0
+  },
+  booksRead: {
+    type: Number,
+    default: 0
+  }
+  }, {
   // Add virtual properties when converting to JSON
   toJSON: { virtuals: true },
   toObject: { virtuals: true }

@@ -94,12 +94,23 @@ exports.getSimilarTitles = async (req, res) => {
       return res.status(404).json({ error: 'Title not found' });
     }
 
+    // Get the list of keywords for the title
+    const titleKeywords = title.keywords;
+
+    // Find similar titles by genre, type, and matching keywords
     const similarTitles = await Title.find({
       _id: { $ne: title._id },
       genre: title.genre,
-      type: title.type
+      type: title.type,
+      keywords: { $in: titleKeywords } // Match any common keyword
     }).limit(5);
 
+    // Check if no similar titles were found
+    if (similarTitles.length === 0) {
+      return res.status(200).json({ message: 'No similar titles found' });
+    }
+
+    // Return the found similar titles
     res.json(similarTitles);
   } catch (error) {
     handleError(res, error);
