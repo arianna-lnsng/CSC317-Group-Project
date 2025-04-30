@@ -19,12 +19,22 @@ const mongoose = require('mongoose');
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/AfterTheCredits')
-  .then(() => console.log('MongoDB connected successfully'))
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    console.log('Please make sure MongoDB is running.');
-  });
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/after_the_credits', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000
+    });
+    console.log(`MongoDB connected successfully: ${conn.connection.host}`);
+  } catch (error) {
+    console.error('MongoDB connection error:', error.message);
+    process.exit(1);
+  }
+};
+
+// Initialize database connection
+connectDB();
 
 // Configure Express
 app.use(express.json());
@@ -118,6 +128,15 @@ app.get('/api/reviews', async (req, res) => {
   }
 });
 
+//Routes for films and user
+const filmRoutes = require('./routes/films');
+const titleRoutes = require('./routes/titles');
+const userRoutes = require('./routes/user');
+
+app.use('/films', filmRoutes);
+app.use('/titles', titleRoutes);
+app.use('/user', userRoutes);
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -131,14 +150,8 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  if (process.env.NODE_ENV === 'production') {
+    console.log('Running on Render');
+  }
 });
-
-//Routes for films and user
-const filmRoutes = require('./routes/films');
-const titleRoutes = require('./routes/titles');
-const userRoutes = require('./routes/user');
-
-app.use('/films', filmRoutes);
-app.use('/titles', titleRoutes);
-app.use('/user', userRoutes);
