@@ -14,6 +14,7 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
 
 // Initialize Express app
 const app = express();
@@ -21,12 +22,9 @@ const app = express();
 // Connect to MongoDB
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/after_the_credits', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000
-    });
+    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/after_the_credits');
     console.log(`MongoDB connected successfully: ${conn.connection.host}`);
+    return conn;
   } catch (error) {
     console.error('MongoDB connection error:', error.message);
     process.exit(1);
@@ -61,6 +59,10 @@ const sessionConfig = {
   secret: process.env.JWT_SECRET || 'your_secure_session_key',
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/after_the_credits',
+    ttl: 24 * 60 * 60 // 1 day
+  }),
   cookie: { 
     maxAge: 24 * 60 * 60 * 1000, // 1 day
     secure: process.env.NODE_ENV === 'production'
