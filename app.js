@@ -15,6 +15,7 @@ const path = require('path');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
+const { ServerApiVersion } = require('mongodb');
 
 // Initialize Express app
 const app = express();
@@ -22,17 +23,34 @@ const app = express();
 // Connect to MongoDB
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/after_the_credits');
-    console.log(`MongoDB connected successfully: ${conn.connection.host}`);
+    const options = {
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true
+      }
+    };
+
+    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/after_the_credits', options);
+    
+    // Send a ping to confirm a successful connection
+    await conn.connection.db.command({ ping: 1 });
+    console.log('Pinged your deployment. You successfully connected to MongoDB!');
     return conn;
   } catch (error) {
     console.error('MongoDB connection error:', error.message);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Connection string:', process.env.MONGODB_URI);
+    }
     process.exit(1);
   }
 };
 
 // Initialize database connection
-connectDB();
+connectDB().catch(err => {
+  console.error('Failed to connect to MongoDB:', err);
+  process.exit(1);
+});
 
 // Configure Express
 app.use(express.json());
