@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: CSC317-GROUP-A
+    env: node
+    buildCommand: npm install
+    startCommand: node app.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+      - key: JWT_SECRET
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+    autoDeploy: true

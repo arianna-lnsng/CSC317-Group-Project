@@ -19,7 +19,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/after_the_credits')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/AfterTheCredits')
   .then(() => console.log('MongoDB connected successfully'))
   .catch(err => {
     console.error('MongoDB connection error:', err);
@@ -46,13 +46,36 @@ app.locals.helpers = {
   }
 };
 
-// Simple session configuration
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'your_secret_key',
+// Session configuration
+const sessionConfig = {
+  secret: process.env.JWT_SECRET || 'your_secure_session_key',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 24 * 60 * 60 * 1000 } // 1 day
-}));
+  cookie: { 
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+    secure: process.env.NODE_ENV === 'production'
+  }
+};
+
+// Use secure cookies in production
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
+app.use(session(sessionConfig));
+
+// Security middleware for production
+if (process.env.NODE_ENV === 'production') {
+  const helmet = require('helmet');
+  app.use(helmet());
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect(`https://${req.header('host')}${req.url}`);
+    } else {
+      next();
+    }
+  });
+}
 
 // Simple authentication tracking middleware
 app.use((req, res, next) => {

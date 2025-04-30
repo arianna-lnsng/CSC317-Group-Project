@@ -29,7 +29,7 @@
 
 3. Create a `.env` file in the root directory with the following content:
    ```env
-   MONGODB_URI=mongodb://localhost:27017/after_the_credits
+   MONGODB_URI=mongodb://localhost:27017/AfterTheCredits
    SESSION_SECRET=your_secure_session_key
    ```
 
@@ -45,6 +45,61 @@
 
 6. Open your browser and navigate to:  
    `http://localhost:3000`
+
+## Deployment
+
+### Deploying to Render
+
+1. Create a Render account at https://render.com
+
+2. Create a new Web Service:
+   - Connect your GitHub repository
+   - Choose the repository and branch
+   - Render will automatically detect the Node.js application
+
+3. Configure the service:
+   - **Name**: CSC317_GROUP-A
+   - **Environment**: Node
+   - **Build Command**: `npm install`
+   - **Start Command**: `node app.js`
+
+4. Add environment variables:
+   - `MONGODB_URI`: Your MongoDB Atlas connection string
+   - `PORT`: 10000 (Render will override this, but it's good to have)
+   - `JWT_SECRET`: The same secret key you used locally
+   - `NODE_ENV`: production
+
+5. Deploy the service:
+   - Click 'Create Web Service'
+   - Render will automatically build and deploy your application
+
+### MongoDB Atlas Setup
+
+1. Create a MongoDB Atlas account at https://www.mongodb.com/cloud/atlas
+
+2. Create a new cluster:
+   - Choose the free tier option
+   - Select a cloud provider and region
+   - Create cluster
+
+3. Set up database access:
+   - Create a database user
+   - Save the credentials securely
+
+4. Configure network access:
+   - Add your IP address
+   - For production, allow access from anywhere (0.0.0.0/0)
+
+5. Get your connection string:
+   - Click 'Connect'
+   - Choose 'Connect your application'
+   - Copy the connection string
+   - Replace `<password>` with your database user's password
+
+6. Add the connection string to Render:
+   - Go to your web service dashboard
+   - Add `MONGODB_URI` environment variable
+   - Paste your MongoDB Atlas connection string
 
 ## Features
 

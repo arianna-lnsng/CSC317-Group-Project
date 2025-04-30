@@ -14,7 +14,7 @@ const Rating = require('../../models/Rating');
 const Review = require('../../models/Review');
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/after_the_credits')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/AfterTheCredits')
   .then(() => console.log('MongoDB connected for seeding'))
   .catch(err => {
     console.error('MongoDB connection error:', err);
