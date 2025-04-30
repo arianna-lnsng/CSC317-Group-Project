@@ -1,3 +1,4 @@
+// app.js
 /**
  * Main application entry point
  * This file sets up our Express server, middleware, and routes
@@ -5,9 +6,11 @@
  * 4-29-2025: Modified by Cielina Lubrino--added path for active nav styling and mount routes
  */
 
-
 // Load environment variables from .env file
 require('dotenv').config();
+console.log('→ ENV MONGODB_URI:', JSON.stringify(process.env.MONGODB_URI));
+console.log('→ ENV NODE_ENV:', process.env.NODE_ENV);
+console.log('→ ENV PORT:', process.env.PORT);
 
 // Core dependencies
 const express = require('express');
@@ -20,37 +23,29 @@ const { ServerApiVersion } = require('mongodb');
 // Initialize Express app
 const app = express();
 
-// Connect to MongoDB
-const connectDB = async () => {
-  try {
-    const options = {
-      serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true
-      }
-    };
+// Connect to MongoDB without killing the app on failure
+if (process.env.MONGODB_URI) {
+  mongoose.set('autoIndex', false);
+  mongoose.set('autoCreate', false);
 
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/after_the_credits', options);
-    
-    // Send a ping to confirm a successful connection
-    await conn.connection.db.command({ ping: 1 });
-    console.log('Pinged your deployment. You successfully connected to MongoDB!');
-    return conn;
-  } catch (error) {
-    console.error('MongoDB connection error:', error.message);
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Connection string:', process.env.MONGODB_URI);
-    }
-    process.exit(1);
-  }
-};
+  const mongooseOptions = {
+    serverApi: { version: ServerApiVersion.v1, strict: true, deprecationErrors: true },
+    maxPoolSize: 10,
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+    family: 4,
+  };
 
-// Initialize database connection
-connectDB().catch(err => {
-  console.error('Failed to connect to MongoDB:', err);
-  process.exit(1);
-});
+  mongoose
+    .connect(process.env.MONGODB_URI, mongooseOptions)
+    .then(() => console.log('✅ MongoDB connected successfully'))
+    .catch(err => {
+      console.error('❌ MongoDB connection error:', err.message);
+      console.warn('Continuing without MongoDB; some features may not work.');
+    });
+} else {
+  console.warn('⚠️  No MONGODB_URI found; skipping database connection.');
+}
 
 // Configure Express
 app.use(express.json());
@@ -109,10 +104,9 @@ if (process.env.NODE_ENV === 'production') {
 
 // Simple authentication tracking middleware
 app.use((req, res, next) => {
-  // Make user data available to all templates
   res.locals.user = req.session.user || null;
   res.locals.isAuthenticated = !!req.session.user;
-  res.locals.path = req.path;// 04-29-2025: Modified by CL
+  res.locals.path = req.path; // 04-29-2025: Modified by CL
   next();
 });
 
@@ -121,7 +115,6 @@ app.get('/', (req, res) => {
   res.render('index', { title: 'After the Credits - Home' });
 });
 
-// Films route
 app.get('/films', (req, res) => {
   res.render('films', { title: 'Films' });
 });
@@ -148,7 +141,7 @@ app.get('/api/reviews', async (req, res) => {
   }
 });
 
-//Routes for films and user
+// Mount external route modules
 const filmRoutes = require('./routes/films');
 const titleRoutes = require('./routes/titles');
 const userRoutes = require('./routes/user');
