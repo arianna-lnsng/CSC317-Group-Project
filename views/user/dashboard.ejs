@@ -1,0 +1,15 @@
+<%- include('../partials/header') %>
+
+<h1>My Watchlist</h1>
+<ul>
+  <% user.watchlist.forEach(t => { %>
+    <li>
+      <a href="/titles/<%= t._id %>"><%= t.name %></a>
+      <form method="POST" action="/titles/<%= t._id %>/remove">
+        <button>Remove</button>
+      </form>
+    </li>
+  <% }) %>
+</ul>
+
+<%- include('../partials/footer') %>

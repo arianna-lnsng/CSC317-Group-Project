@@ -1,0 +1,50 @@
+﻿<%- include('./partials/header') %>
+
+<h1><%= title.name %> (<%= title.releaseYear %>)</h1>
+<p><strong>Genre:</strong> <%= title.genre %></p>
+<p><strong>Average Rating:</strong> ★ <%= title.averageRating.toFixed(1) %></p>
+
+<!-- User Rating Form -->
+<% if (isAuthenticated) { %>
+  <form method="POST" action="/titles/<%= title._id %>/rate">
+    <label>Rate this title (1-5):</label>
+    <input type="number" name="rating" min="1" max="5" required>
+    <button type="submit">Submit</button>
+  </form>
+<% } %>
+
+<!-- Review Form -->
+<% if (isAuthenticated) { %>
+  <form method="POST" action="/titles/<%= title._id %>/reviews">
+    <input type="text" name="reviewTitle" placeholder="Review title" required>
+    <textarea name="content" placeholder="Your review" required></textarea>
+    <button type="submit">Post Review</button>
+  </form>
+<% } %>
+
+<!-- Reviews -->
+<h3>Reviews</h3>
+<% reviews.forEach(r => { %>
+  <div class="review">
+    <strong><%= r.user.username %></strong>
+    <span><%= helpers.formatDate(r.createdAt) %></span>
+    <p><%= r.title %>: <%= r.content %></p>
+
+    <% if (user && user._id === r.user._id) { %>
+      <a href="/reviews/<%= r._id %>/edit">Edit</a>
+      <form method="POST" action="/reviews/<%= r._id %>?_method=DELETE">
+        <button>Delete</button>
+      </form>
+    <% } %>
+  </div>
+<% }) %>
+
+<!-- Related Titles -->
+<h3>Similar Titles</h3>
+<ul>
+  <% relatedTitles.forEach(t => { %>
+    <li><a href="/titles/<%= t._id %>"><%= t.name %></a></li>
+  <% }) %>
+</ul>
+
+<%- include('./partials/footer') %>

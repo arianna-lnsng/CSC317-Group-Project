@@ -1,7 +1,10 @@
 /**
  * Main application entry point
  * This file sets up our Express server, middleware, and routes
+ * 
+ * 4-29-2025: Modified by Cielina Lubrino--added path for active nav styling and mount routes
  */
+
 
 // Load environment variables from .env file
 require('dotenv').config();
@@ -56,6 +59,7 @@ app.use((req, res, next) => {
   // Make user data available to all templates
   res.locals.user = req.session.user || null;
   res.locals.isAuthenticated = !!req.session.user;
+  res.locals.path = req.path;// 04-29-2025: Modified by CL
   next();
 });
 
@@ -110,3 +114,14 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+//Routes for book,movies,titles,and user
+const bookRoutes = require('./routes/books');
+const movieRoutes = require('./routes/movies');
+const titleRoutes = require('./routes/titles');
+const userRoutes = require('./routes/user');
+
+app.use('/books', bookRoutes);
+app.use('/movies', movieRoutes);
+app.use('/titles', titleRoutes);
+app.use('/user', userRoutes);

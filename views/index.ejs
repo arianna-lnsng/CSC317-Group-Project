@@ -1,39 +1,35 @@
-<%- include('./partials/header') %>
+<%- include('partials/header') %>
 
-<div class="container">
-  <div class="welcome-section">
-    <h1><%= message %></h1>
-    <p>A simple authentication system for web applications</p>
-    
-    <% if (isAuthenticated) { %>
-      <div class="action-buttons">
-        <a href="/user/profile" class="btn primary-btn">View Profile</a>
-      </div>
-    <% } else { %>
-      <div class="action-buttons">
-        <a href="/auth/login" class="btn primary-btn">Login</a>
-        <a href="/auth/register" class="btn secondary-btn">Register</a>
-      </div>
-    <% } %>
-  </div>
-  
-  <div class="features-section">
-    <h2>Features</h2>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <h3>User Authentication</h3>
-        <p>Secure login and registration with password hashing</p>
-      </div>
-      <div class="feature-card">
-        <h3>Session Management</h3>
-        <p>Persistent sessions with secure cookies</p>
-      </div>
-      <div class="feature-card">
-        <h3>Protected Routes</h3>
-        <p>Restrict access to authenticated users only</p>
-      </div>
+<section class="hero">
+  <div class="hero-content">
+    <h2>Discover Your Next Favorite Story</h2>
+    <p>Explore thousands of books and movies, share your thoughts, and connect with fellow enthusiasts.</p>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Search for books, movies, authors, directors..." />
+      <button>Search</button>
     </div>
   </div>
+</section>
+
+<div class="container">
+  <section class="features-section">
+    <h2>What You Can Do</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>Explore</h3>
+        <p>Browse our library of books and movies with ratings and reviews from real users.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Review</h3>
+        <p>Leave reviews and ratings for titles you've read or watched.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Track</h3>
+        <p>View your rated titles and manage your profile from a personal dashboard.</p>
+      </div>
+    </div>
+  </section>
 </div>
 
-<%- include('./partials/footer') %>
+<%- include('partials/footer') %>

@@ -3,18 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %> | Authentication Template</title>
+  <title><%= title %> | Ink & Frame</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <header>
     <nav class="navbar">
       <div class="logo">
-        <a href="/">Auth Template</a>
+        <a href="/">Ink & Frame</a>
       </div>
       <ul class="nav-links">
         <li><a href="/" class="<%= path === '/' ? 'active' : '' %>">Home</a></li>
         <li><a href="/about" class="<%= path === '/about' ? 'active' : '' %>">About</a></li>
+        <li><a href="/books" class="<%= path === '/books' ? 'active' : '' %>">Books</a></li>
+        <li><a href="/movies" class="<%= path === '/movies' ? 'active' : '' %>">Movies</a></li>
+
         
         <% if (isAuthenticated) { %>
           <li><a href="/user/profile" class="<%= path === '/user/profile' ? 'active' : '' %>">Profile</a></li>

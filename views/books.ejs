@@ -1,0 +1,21 @@
+﻿<%- include('./partials/header') %>
+
+<h1>Books</h1>
+<div class="cards-grid">
+  <% titles.forEach(book => { %>
+    <div class="card">
+      <img src="<%= book.imageUrl %>" alt="<%= book.name %>" class="card-image">
+      <div class="card-content">
+        <div class="card-title"><%= book.name %></div>
+        <div class="card-meta">
+          <span><%= book.genre %></span>
+          <span><%= book.releaseYear %></span>
+        </div>
+        <div class="rating">★ <%= book.averageRating.toFixed(1) %></div>
+        <a href="/titles/<%= book._id %>">Details</a>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+<%- include('./partials/footer') %>
