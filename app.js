@@ -116,12 +116,10 @@ app.listen(PORT, () => {
 });
 
 //Routes for book,movies,titles,and user
-const bookRoutes = require('./routes/books');
 const movieRoutes = require('./routes/movies');
 const titleRoutes = require('./routes/titles');
 const userRoutes = require('./routes/user');
 
-app.use('/books', bookRoutes);
 app.use('/movies', movieRoutes);
 app.use('/titles', titleRoutes);
 app.use('/user', userRoutes);
