@@ -1,3 +1,4 @@
+//app.js
 /**
  * Main application entry point
  * This file sets up our Express server, middleware, and routes
@@ -5,26 +6,46 @@
  * 4-29-2025: Modified by Cielina Lubrino--added path for active nav styling and mount routes
  */
 
-
 // Load environment variables from .env file
 require('dotenv').config();
+console.log('→ ENV MONGODB_URI:', JSON.stringify(process.env.MONGODB_URI));
+console.log('→ ENV NODE_ENV:', process.env.NODE_ENV);
+console.log('→ ENV PORT:', process.env.PORT);
 
 // Core dependencies
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
+const { ServerApiVersion } = require('mongodb');
 
 // Initialize Express app
 const app = express();
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ink_and_frame')
-  .then(() => console.log('MongoDB connected successfully'))
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    console.log('Please make sure MongoDB is running.');
-  });
+// Connect to MongoDB without killing the app on failure
+if (process.env.MONGODB_URI) {
+  mongoose.set('autoIndex', false);
+  mongoose.set('autoCreate', false);
+
+  const mongooseOptions = {
+    serverApi: { version: ServerApiVersion.v1, strict: true, deprecationErrors: true },
+    maxPoolSize: 10,
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+    family: 4,
+  };
+
+  mongoose
+    .connect(process.env.MONGODB_URI, mongooseOptions)
+    .then(() => console.log('✅ MongoDB connected successfully'))
+    .catch(err => {
+      console.error('❌ MongoDB connection error:', err.message);
+      console.warn('Continuing without MongoDB; some features may not work.');
+    });
+} else {
+  console.warn('⚠️  No MONGODB_URI found; skipping database connection.');
+}
 
 // Configure Express
 app.use(express.json());
@@ -46,35 +67,56 @@ app.locals.helpers = {
   }
 };
 
-// Simple session configuration
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'your_secret_key',
+// Session configuration
+const sessionConfig = {
+  secret: process.env.JWT_SECRET || 'your_secure_session_key',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 24 * 60 * 60 * 1000 } // 1 day
-}));
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/after_the_credits',
+    ttl: 24 * 60 * 60 // 1 day
+  }),
+  cookie: { 
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+    secure: process.env.NODE_ENV === 'production'
+  }
+};
+
+// Use secure cookies in production
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
+app.use(session(sessionConfig));
+
+// Security middleware for production
+if (process.env.NODE_ENV === 'production') {
+  const helmet = require('helmet');
+  app.use(helmet());
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect(`https://${req.header('host')}${req.url}`);
+    } else {
+      next();
+    }
+  });
+}
 
 // Simple authentication tracking middleware
 app.use((req, res, next) => {
-  // Make user data available to all templates
   res.locals.user = req.session.user || null;
   res.locals.isAuthenticated = !!req.session.user;
-  res.locals.path = req.path;// 04-29-2025: Modified by CL
+  res.locals.path = req.path; // 04-29-2025: Modified by CL
   next();
 });
 
 // Define routes
 app.get('/', (req, res) => {
-  res.render('index', { title: 'Ink & Frame - Home' });
+  res.render('index', { title: 'After the Credits - Home' });
 });
 
-// Books and movies routes
-app.get('/books', (req, res) => {
-  res.render('books', { title: 'Books' });
-});
-
-app.get('/movies', (req, res) => {
-  res.render('movies', { title: 'Movies' });
+app.get('/films', (req, res) => {
+  res.render('films', { title: 'Films' });
 });
 
 // API endpoints for titles
@@ -99,6 +141,15 @@ app.get('/api/reviews', async (req, res) => {
   }
 });
 
+// Mount external route modules
+const filmRoutes = require('./routes/films');
+const titleRoutes = require('./routes/titles');
+const userRoutes = require('./routes/user');
+
+app.use('/films', filmRoutes);
+app.use('/titles', titleRoutes);
+app.use('/user', userRoutes);
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -112,6 +163,7 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
+<<<<<<< HEAD
   console.log(`Server running on http://localhost:${PORT}`);
 });
 
@@ -123,3 +175,9 @@ const userRoutes = require('./routes/user');
 app.use('/movies', movieRoutes);
 app.use('/titles', titleRoutes);
 app.use('/user', userRoutes);
+=======
+  console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  if (process.env.NODE_ENV === 'production') {
+    console.log('Running on Render');
+  }
+});
