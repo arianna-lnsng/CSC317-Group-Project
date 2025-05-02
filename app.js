@@ -163,19 +163,6 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-<<<<<<< HEAD
-  console.log(`Server running on http://localhost:${PORT}`);
-});
-
-//Routes for book,movies,titles,and user
-const movieRoutes = require('./routes/movies');
-const titleRoutes = require('./routes/titles');
-const userRoutes = require('./routes/user');
-
-app.use('/movies', movieRoutes);
-app.use('/titles', titleRoutes);
-app.use('/user', userRoutes);
-=======
   console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
   if (process.env.NODE_ENV === 'production') {
     console.log('Running on Render');
