@@ -48,7 +48,7 @@ async function importFilm(titleName) {
     imageUrl: posterPath,
     genre: details.genres?.[0]?.name?.toLowerCase() || 'unknown',
     releaseYear: parseInt(details.release_date?.split('-')[0]) || null,
-    keywords: [] // Optional: Add TMDb keywords if needed
+    keywords: []
   });
 
   // Save the movie to the database
