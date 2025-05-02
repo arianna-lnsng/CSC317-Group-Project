@@ -66,7 +66,8 @@ exports.getAllReviews = async (req, res) => {
     
     const reviews = await Review.find(query)
       .populate('userId', 'username')
-      .populate('titleId', 'name type imageUrl')
+      // Removed 'type' from populate as it doesn't exist on Title model
+      .populate('titleId', 'name imageUrl') 
       .sort(sortOptions);
       
     res.json(reviews);

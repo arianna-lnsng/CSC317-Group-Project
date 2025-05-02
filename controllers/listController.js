@@ -15,7 +15,7 @@ exports.addToList = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
     
-    const { titleId, listType } = req.body;
+    const { titleId } = req.body;
     const userId = req.session.userId;
 
     // Check if title exists
@@ -59,7 +59,7 @@ exports.removeFromList = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
     
-    const { titleId, listType } = req.body;
+    const { titleId } = req.body;
     const userId = req.session.userId;
 
     // Check if title exists
@@ -100,12 +100,6 @@ exports.removeFromList = async (req, res) => {
 
 exports.getList = async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    
-    const { listType } = req.params;
     const userId = req.session.userId;
 
     // Get user's watchlist with populated film data
@@ -118,7 +112,7 @@ exports.getList = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
     
-    res.json(user[listType]);
+    res.json(user.watchlist);
   } catch (error) {
     handleError(res, error);
   }
@@ -127,12 +121,7 @@ exports.getList = async (req, res) => {
 // Check if a title is in a user's list
 exports.checkTitleInList = async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    
-    const { listType, titleId } = req.params;
+    const { titleId } = req.params; 
     const userId = req.session.userId;
     
     // Check if title exists
@@ -147,11 +136,10 @@ exports.checkTitleInList = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
     
-    const isInList = user[listType].some(id => id.toString() === titleId);
+    const isInList = user.watchlist.some(id => id.toString() === titleId);
     
     res.json({
-      inList: isInList,
-      listType: listType
+      inList: isInList
     });
   } catch (error) {
     handleError(res, error);

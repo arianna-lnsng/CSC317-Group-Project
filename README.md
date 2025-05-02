@@ -29,8 +29,20 @@
 
 3. Create a `.env` file in the root directory with the following content:
    ```env
-   MONGODB_URI=mongodb://localhost:27017/AfterTheCredits
+   # Use your MongoDB connection string (local or Atlas)
+   MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-url>/after_the_credits?retryWrites=true&w=majority
+   
+   # Secret key for session management
    SESSION_SECRET=your_secure_session_key
+   
+   # Secret key for JWT signing (authentication)
+   JWT_SECRET=your_jwt_secret_key
+
+   # API Key for The Movie Database (TMDB)
+   TMDB_API_KEY=your_tmdb_api_key
+   
+   # Environment (development or production)
+   NODE_ENV=development 
    ```
 
 4. Seed the database with initial data:
@@ -245,7 +257,6 @@ Authentication Middleware:
 - Titles must include required fields and correct formats.
 - Ratings must be between 1 and 5.
 - Reviews must have a title and valid rating.
-- Lists must use valid list type (`watchlist`).
 
 ## Error Handling
 All API responses use a consistent error format:

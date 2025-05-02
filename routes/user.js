@@ -57,28 +57,6 @@ router.get('/watchlist', async (req, res) => {
   }
 });
 
-// User reading list page
-router.get('/reading-list', async (req, res) => {
-  try {
-    const user = await User.findById(req.session.userId)
-      .populate('readingList');
-    
-    if (!user) {
-      return res.redirect('/auth/login');
-    }
-    
-    res.render('user/reading-list', {
-      title: 'My Reading List',
-      readingList: user.readingList
-    });
-  } catch (error) {
-    console.error('Reading list error:', error);
-    res.render('error', {
-      title: 'Error',
-      message: 'An error occurred while loading your reading list',
-      error
-    });
-  }
-});
+// Removed User reading list page (lines 60-82)
 
 module.exports = router;

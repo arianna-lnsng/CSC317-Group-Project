@@ -24,12 +24,11 @@ exports.createTitle = async (req, res) => {
 
 exports.getAllTitles = async (req, res) => {
   try {
-    const { genre, minRating, type, search } = req.query;
+    const { genre, minRating, search } = req.query;
     let query = {};
 
     // Apply filters
     if (genre) query.genre = genre.toLowerCase();
-    if (type) query.type = type.toLowerCase();
     if (minRating) query.averageRating = { $gte: parseFloat(minRating) };
     if (search) query.$text = { $search: search };
 
@@ -97,11 +96,10 @@ exports.getSimilarTitles = async (req, res) => {
     // Get the list of keywords for the title
     const titleKeywords = title.keywords;
 
-    // Find similar titles by genre, type, and matching keywords
+    // Find similar titles by genre and matching keywords
     const similarTitles = await Title.find({
       _id: { $ne: title._id },
       genre: title.genre,
-      type: title.type,
       keywords: { $in: titleKeywords } // Match any common keyword
     }).limit(5);
 

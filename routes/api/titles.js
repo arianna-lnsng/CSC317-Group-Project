@@ -12,12 +12,13 @@ const validateTitle = [
     .withMessage('Title name is required')
     .isLength({ max: 200 })
     .withMessage('Title name must be less than 200 characters'),
-  body('type')
-    .trim()
-    .notEmpty()
-    .withMessage('Type is required')
-    .isIn(['book', 'movie'])
-    .withMessage('Type must be either book or movie'),
+  // Removed outdated 'type' validation
+  // body('type')
+  //   .trim()
+  //   .notEmpty()
+  //   .withMessage('Type is required')
+  //   .isIn(['book', 'movie'])
+  //   .withMessage('Type must be either book or movie'),
   body('imageUrl')
     .trim()
     .notEmpty()
