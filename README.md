@@ -142,19 +142,29 @@
 - Manage saved films (add/remove).
 - Requires user authentication.
 
-## Directory Structure
+## Project Structure
+
+```tree
+.
+├── .env                  # Environment variables
+├── .gitignore            # Git ignore rules
+├── Procfile              # Render process definition
+├── README.md             # Project README file
+├── app.js                # Main application entry point
+├── config/               # Configuration files
+├── controllers/          # Route handlers and business logic
+├── middleware/           # Custom middleware functions
+├── models/               # Database models/schemas
+├── package-lock.json     # Exact dependency versions
+├── package.json          # Project dependencies and scripts
+├── public/               # Static assets (CSS, JS, images)
+├── render.yaml           # Render deployment configuration
+├── routes/               # Application routes
+├── utils/                # Utility functions and helpers
+└── views/                # Server-side templates (e.g., EJS)
+
 ```
-├── controllers/        # Route handlers and business logic
-├── models/            # MongoDB schema definitions
-├── public/            # Static files (CSS, client-side JS)
-├── routes/            # Express route definitions
-│   └── api/          # API route handlers
-├── utils/            # Helper functions and utilities
-│   └── seeders/     # Database seeding scripts
-├── views/            # EJS templates
-├── app.js            # Main application entry point
-└── package.json      # Project dependencies and scripts
-```
+*(Note: `node_modules`, `.git`, and other configuration-specific hidden files/directories are typically omitted from this view for clarity)*
 
 ## Backend API Documentation
 
