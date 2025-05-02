@@ -4,9 +4,10 @@
   <div class="auth-form">
     <h1>Create an Account</h1>
     
-    <%- include('../partials/form-errors') %>
+    <%- include('../partials/flash-message') %>
+    <%- include('../partials/form-errors', { errors: typeof errors != 'undefined' ? errors : [] }) %>
     
-    <form action="/auth/register" method="POST">
+    <form action="/auth/register" method="POST" novalidate>
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       
       <div class="form-group">
@@ -14,15 +15,17 @@
         <input 
           type="text" 
           id="username" 
-          name="username" 
+          name="username"
           value="<%= typeof formData !== 'undefined' ? formData.username || '' : '' %>"
-          placeholder="Choose a username (3-20 characters)"
+          placeholder="Choose a username"
           required
           minlength="3"
           maxlength="20"
+          aria-describedby="usernameError"
         >
+        <div id="usernameError" class="error-message"></div>
       </div>
-      
+
       <div class="form-group">
         <label for="email">Email Address</label>
         <input 
@@ -30,9 +33,11 @@
           id="email" 
           name="email"
           value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>"
-          placeholder="Enter your email address"
+          placeholder="Enter your email"
           required
+          aria-describedby="emailError"
         >
+        <div id="emailError" class="error-message"></div>
       </div>
       
       <div class="form-group">
@@ -41,24 +46,28 @@
           type="password" 
           id="password" 
           name="password"
-          placeholder="Create a password (min 8 characters)"
+          placeholder="Create a strong password"
           required
           minlength="8"
+          aria-describedby="passwordError passwordHelp"
         >
-        <div class="form-hint">
-          Password must include at least 8 characters with 1 uppercase letter, 1 lowercase letter, and 1 number.
-        </div>
+        <small id="passwordHelp" class="form-text text-muted">
+          Must be at least 8 characters long and include uppercase, lowercase, number, and special character.
+        </small>
+        <div id="passwordError" class="error-message"></div>
       </div>
-      
+
       <div class="form-group">
         <label for="confirmPassword">Confirm Password</label>
         <input 
           type="password" 
           id="confirmPassword" 
           name="confirmPassword"
-          placeholder="Enter your password again"
+          placeholder="Re-enter your password"
           required
+          aria-describedby="confirmPasswordError"
         >
+        <div id="confirmPasswordError" class="error-message"></div>
       </div>
       
       <div class="form-actions">

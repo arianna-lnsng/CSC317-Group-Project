@@ -5,9 +5,9 @@
     <h1>Login to Your Account</h1>
     
     <%- include('../partials/flash-message') %>
-    <%- include('../partials/form-errors') %>
+    <%- include('../partials/form-errors', { errors: typeof errors != 'undefined' ? errors : [] }) %>
     
-    <form action="/auth/login" method="POST">
+    <form action="/auth/login" method="POST" novalidate>
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       
       <div class="form-group">
@@ -19,7 +19,11 @@
           value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>"
           placeholder="Enter your email address"
           required
+          aria-describedby="emailError"
         >
+        <div id="emailError" class="error-message">
+          <% /* Placeholder for potential client-side errors */ %>
+        </div>
       </div>
       
       <div class="form-group">
@@ -30,7 +34,11 @@
           name="password"
           placeholder="Enter your password"
           required
+          aria-describedby="passwordError"
         >
+        <div id="passwordError" class="error-message">
+          <% /* Placeholder for potential client-side errors */ %>
+        </div>
       </div>
       
       <div class="form-actions">
@@ -39,7 +47,7 @@
     </form>
     
     <div class="form-footer">
-      <p>Don't have an account? <a href="/auth/register">Register</a></p>
+      <p>Don't have an account? <a href="/auth/register">Register here</a>.</p>
     </div>
   </div>
 </div>

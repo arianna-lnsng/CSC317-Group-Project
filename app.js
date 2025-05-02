@@ -1,174 +1,176 @@
-//app.js
 /**
- * Main application entry point
- * This file sets up our Express server, middleware, and routes
- * 
- * 4-29-2025: Modified by Cielina Lubrino--added path for active nav styling and mount routes
+ * Main application entry point for After the Credits platform
  */
 
-// Load environment variables from .env file
 require('dotenv').config();
-console.log('→ ENV MONGODB_URI:', JSON.stringify(process.env.MONGODB_URI));
-console.log('→ ENV NODE_ENV:', process.env.NODE_ENV);
-console.log('→ ENV PORT:', process.env.PORT);
 
-// Core dependencies
+// Dependencies
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
-const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
-const { ServerApiVersion } = require('mongodb');
+const mongoose = require('mongoose');
+const csrf = require('csurf');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const cookieParser = require('cookie-parser');
 
-// Initialize Express app
+// Routes
+const indexRoutes = require('./routes/index');
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
+const filmRoutes = require('./routes/films');
+const titleRoutes = require('./routes/titles');
+const apiTitleRoutes = require('./routes/api/titles');
+
+// Middleware
+const { setLocals } = require('./middleware/locals');
+const { handleErrors } = require('./middleware/error-handler');
+
 const app = express();
 
-// Connect to MongoDB without killing the app on failure
+// MongoDB connection with fault tolerance
 if (process.env.MONGODB_URI) {
   mongoose.set('autoIndex', false);
   mongoose.set('autoCreate', false);
 
   const mongooseOptions = {
-    serverApi: { version: ServerApiVersion.v1, strict: true, deprecationErrors: true },
     maxPoolSize: 10,
     serverSelectionTimeoutMS: 5000,
     socketTimeoutMS: 45000,
-    family: 4,
+    family: 4
   };
 
-  mongoose
-    .connect(process.env.MONGODB_URI, mongooseOptions)
-    .then(() => console.log('✅ MongoDB connected successfully'))
+  mongoose.connect(process.env.MONGODB_URI, mongooseOptions)
+    .then(() => console.log('MongoDB connected successfully'))
     .catch(err => {
-      console.error('❌ MongoDB connection error:', err.message);
-      console.warn('Continuing without MongoDB; some features may not work.');
+      console.error('MongoDB connection error:', err);
+      console.log('Continuing without MongoDB. Some features may not work.');
     });
 } else {
-  console.warn('⚠️  No MONGODB_URI found; skipping database connection.');
+  console.log('No MONGODB_URI found. Authentication features disabled.');
 }
 
-// Configure Express
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Security headers
+app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "image.tmdb.org"],
+      connectSrc: ["'self'"],
+      formAction: ["'self'"],
+    },
+  })
+);
+
+app.use(cookieParser());
+
+// Rate limiting configuration
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 150,
+  message: 'Too many requests from this IP, please try again after 15 minutes',
+  handler: (req, res, next, options) => {
+    console.warn(`General Rate limit exceeded for IP: ${req.ip}`);
+    res.status(options.statusCode).send(options.message);
+  },
+});
+
+const authLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  message: 'Too many authentication attempts from this IP, please try again after an hour',
+   handler: (req, res, next, options) => {
+    console.warn(`Auth Rate limit exceeded for IP: ${req.ip}`);
+    res.status(options.statusCode).send(options.message);
+  },
+});
+
+app.use(generalLimiter);
+
+// Request parsing
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Set up EJS view engine
+// View engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Helper functions for templates
-app.locals.helpers = {
-  isActiveRoute: (path, route) => path === route,
-  currentYear: () => new Date().getFullYear(),
-  formatDate: (date) => {
-    if (!date) return '';
-    const d = new Date(date);
-    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-  }
-};
-
 // Session configuration
-const sessionConfig = {
-  secret: process.env.JWT_SECRET || 'your_secure_session_key',
+let sessionConfig = {
+  secret: process.env.SESSION_SECRET || process.env.JWT_SECRET || 'a_default_fallback_secret_change_this',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/after_the_credits',
-    ttl: 24 * 60 * 60 // 1 day
-  }),
-  cookie: { 
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
-    secure: process.env.NODE_ENV === 'production'
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict'
   }
 };
 
-// Use secure cookies in production
-if (process.env.NODE_ENV === 'production') {
-  app.set('trust proxy', 1);
+// Configure session store
+if (process.env.MONGODB_URI) {
+  try {
+    sessionConfig.store = MongoStore.create({ 
+      mongoUrl: process.env.MONGODB_URI,
+      ttl: 14 * 24 * 60 * 60,
+      collectionName: 'sessions',
+      autoRemove: 'native',
+      touchAfter: 24 * 3600
+    });
+    console.log('MongoDB session store configured.');
+  } catch (error) {
+    console.error('Error configuring MongoDB session store:', error);
+    console.warn('Using memory session store');
+  }
+} else {
+   console.warn('Using memory session store');
 }
 
 app.use(session(sessionConfig));
 
-// Security middleware for production
-if (process.env.NODE_ENV === 'production') {
-  const helmet = require('helmet');
-  app.use(helmet());
+// CSRF Protection with fallback
+try {
+  app.use(csrf({ cookie: false }));
+
   app.use((req, res, next) => {
-    if (req.header('x-forwarded-proto') !== 'https') {
-      res.redirect(`https://${req.header('host')}${req.url}`);
-    } else {
-      next();
+    try {
+      res.locals.csrfToken = req.csrfToken();
+    } catch (err) {
+      console.error('Error generating CSRF token:', err);
+      res.locals.csrfToken = 'dummy-csrf-token-error-occurred';
     }
+    next();
+  });
+} catch (err) {
+  console.error('Error setting up CSRF protection:', err);
+  app.use((req, res, next) => {
+    res.locals.csrfToken = 'csrf-disabled-error-occurred';
+    next();
   });
 }
 
-// Simple authentication tracking middleware
-app.use((req, res, next) => {
-  res.locals.user = req.session.user || null;
-  res.locals.isAuthenticated = !!req.session.user;
-  res.locals.path = req.path; // 04-29-2025: Modified by CL
-  next();
-});
+// Set template variables
+app.use(setLocals);
 
-// Define routes
-app.get('/', (req, res) => {
-  res.render('index', { title: 'After the Credits - Home' });
-});
+// Route mounting
+app.use('/', indexRoutes);
+app.use('/auth', authLimiter, authRoutes);
+app.use('/user', userRoutes);
+app.use('/films', filmRoutes);
+app.use('/titles', titleRoutes);
+app.use('/api/titles', apiTitleRoutes);
 
-app.get('/films', (req, res) => {
-  res.render('films', { title: 'Films' });
-});
-
-// API endpoints for titles
-app.get('/api/titles', async (req, res) => {
-  try {
-    const Title = require('./models/Title');
-    const titles = await Title.find();
-    res.json(titles);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// API endpoints for reviews
-app.get('/api/reviews', async (req, res) => {
-  try {
-    const Review = require('./models/Review');
-    const reviews = await Review.find().populate('userId', 'username');
-    res.json(reviews);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+// Error handling - must be last middleware
+app.use(handleErrors);
 
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
-
-// Define routes
-const filmRoutes = require('./routes/films');
-const titleRoutes = require('./routes/titles');
-const apiTitleRoutes = require('./routes/api/titles'); // Added TMDB API routes
-const userRoutes = require('./routes/user');
-
-// Use routes
-app.use('/films', filmRoutes);
-app.use('/titles', titleRoutes);
-app.use('/api/titles', apiTitleRoutes); // Added TMDB API routes
-app.use('/user', userRoutes);
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).render('error', {
-    title: 'Error',
-    message: 'Something went wrong!',
-    error: process.env.NODE_ENV === 'development' ? err : {}
-  });
-});
-
-if (process.env.NODE_ENV === 'production') {
-  console.log('Running on Render');
-}
