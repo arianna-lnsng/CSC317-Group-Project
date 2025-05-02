@@ -141,13 +141,22 @@ app.get('/api/reviews', async (req, res) => {
   }
 });
 
-// Mount external route modules
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+});
+
+// Define routes
 const filmRoutes = require('./routes/films');
 const titleRoutes = require('./routes/titles');
+const apiTitleRoutes = require('./routes/api/titles'); // Added TMDB API routes
 const userRoutes = require('./routes/user');
 
+// Use routes
 app.use('/films', filmRoutes);
 app.use('/titles', titleRoutes);
+app.use('/api/titles', apiTitleRoutes); // Added TMDB API routes
 app.use('/user', userRoutes);
 
 // Error handling middleware
@@ -160,24 +169,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-<<<<<<< HEAD
-  console.log(`Server running on http://localhost:${PORT}`);
-});
-
-//Routes for book,movies,titles,and user
-const movieRoutes = require('./routes/movies');
-const titleRoutes = require('./routes/titles');
-const userRoutes = require('./routes/user');
-
-app.use('/movies', movieRoutes);
-app.use('/titles', titleRoutes);
-app.use('/user', userRoutes);
-=======
-  console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-  if (process.env.NODE_ENV === 'production') {
-    console.log('Running on Render');
-  }
-});
+if (process.env.NODE_ENV === 'production') {
+  console.log('Running on Render');
+}
