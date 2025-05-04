@@ -44,9 +44,24 @@ async function getMovieCredits(id) {
   return res.data;
 }
 
+/**
+ * Get keywords for a movie from TMDb
+ * @param {number|string} id - The TMDb movie ID
+ * @returns {Array<string>} A list of keyword names
+ */
+async function getMovieKeywords(id) {
+  const res = await axios.get(`${TMDB_BASE_URL}/movie/${id}/keywords`, {
+    params: { api_key: TMDB_API_KEY }
+  });
+
+  // Return just the keyword names
+  return res.data.keywords?.map(k => k.name.toLowerCase()) || [];
+}
+
 // Export all three functions for use in other files (e.g. importFilm.js)
 module.exports = {
   searchMovie,
   getMovieDetails,
-  getMovieCredits
+  getMovieCredits,
+  getMovieKeywords 
 };

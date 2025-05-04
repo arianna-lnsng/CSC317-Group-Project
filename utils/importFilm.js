@@ -2,7 +2,7 @@
  * This module imports a movie's data from TMDb and saves it to the database using the Title model.
  */
 
-const { searchMovie, getMovieDetails, getMovieCredits } = require('../routes/api/tmdb');
+const { searchMovie, getMovieDetails, getMovieCredits, getMovieKeywords } = require('../routes/api/tmdb');
 const Title = require('../models/Title');
 
 /**
@@ -29,6 +29,7 @@ async function importFilm(titleName) {
 
   // Fetch full movie details from TMDb
   const details = await getMovieDetails(movieId);
+  const keywords = await getMovieKeywords(movieId);
 
   // Fetch credits to extract the director's name
   const credits = await getMovieCredits(movieId);
@@ -48,7 +49,7 @@ async function importFilm(titleName) {
     imageUrl: posterPath,
     genre: details.genres?.[0]?.name?.toLowerCase() || 'unknown',
     releaseYear: parseInt(details.release_date?.split('-')[0]) || null,
-    keywords: []
+    keywords: keywords
   });
 
   // Save the movie to the database
