@@ -8,7 +8,7 @@ const router = express.Router();
 const Title = require('../models/Title');
 
 router.get('/', async (req, res) => {
-    const titles = await Title.find({ type: 'movie' });
+    const titles = await Title.find().sort({ name: 'asc' }).limit(10);
     res.render('movies', { title: 'Movies', titles });
 });
 
