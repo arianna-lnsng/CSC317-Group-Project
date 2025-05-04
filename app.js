@@ -59,7 +59,7 @@ app.use(
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "image.tmdb.org"],
+      imgSrc: ["'self'", "data:", "image.tmdb.org", "m.media-amazon.com"],
       connectSrc: ["'self'"],
       formAction: ["'self'"],
     },
@@ -83,7 +83,7 @@ const authLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 10,
   message: 'Too many authentication attempts from this IP, please try again after an hour',
-   handler: (req, res, next, options) => {
+  handler: (req, res, next, options) => {
     console.warn(`Auth Rate limit exceeded for IP: ${req.ip}`);
     res.status(options.statusCode).send(options.message);
   },
@@ -116,7 +116,7 @@ let sessionConfig = {
 // Configure session store
 if (process.env.MONGODB_URI) {
   try {
-    sessionConfig.store = MongoStore.create({ 
+    sessionConfig.store = MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
       ttl: 14 * 24 * 60 * 60,
       collectionName: 'sessions',
@@ -129,7 +129,7 @@ if (process.env.MONGODB_URI) {
     console.warn('Using memory session store');
   }
 } else {
-   console.warn('Using memory session store');
+  console.warn('Using memory session store');
 }
 
 app.use(session(sessionConfig));

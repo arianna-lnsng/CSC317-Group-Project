@@ -19,9 +19,4 @@ router.get('/about', (req, res) => {
   res.render('about', { title: 'After the Credits - About' });
 });
 
-// Films page route (moved from app.js)
-router.get('/films', (req, res) => {
-  res.render('films', { title: 'Films' });
-});
-
 module.exports = router;
