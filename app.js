@@ -162,7 +162,7 @@ app.use(setLocals);
 app.use('/', indexRoutes);
 app.use('/auth', authLimiter, authRoutes);
 app.use('/user', userRoutes);
-app.use('/films', filmRoutes);
+app.use('/movies', filmRoutes);
 app.use('/titles', titleRoutes);
 app.use('/api/titles', apiTitleRoutes);
 
