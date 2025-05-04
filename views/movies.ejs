@@ -1,8 +1,9 @@
 ﻿<%- include('./partials/header') %>
 
 <h1>Movies</h1>
+
 <div class="cards-grid">
-  <% titles.forEach(movies => { %>
+  <% titles.forEach(movie => { %>
     <div class="card">
       <img src="<%= movie.imageUrl %>" alt="<%= movie.name %>" class="card-image">
       <div class="card-content">
@@ -12,7 +13,7 @@
           <span><%= movie.releaseYear %></span>
         </div>
         <div class="rating">★ <%= movie.averageRating.toFixed(1) %></div>
-        <a href="/titles/<%= book._id %>">Details</a>
+        <a href="/titles/<%= movie._id %>">Details</a>
       </div>
     </div>
   <% }) %>
