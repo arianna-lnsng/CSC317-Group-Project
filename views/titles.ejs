@@ -1,50 +1,69 @@
 ﻿<%- include('./partials/header') %>
 
-<h1><%= title.name %> (<%= title.releaseYear %>)</h1>
-<p><strong>Genre:</strong> <%= title.genre %></p>
-<p><strong>Average Rating:</strong> ★ <%= title.averageRating.toFixed(1) %></p>
+<section class="title-detail">
+  <h1><%= title.name %> (<%= title.releaseYear %>)</h1>
+  <img src="<%= title.imageUrl %>" alt="<%= title.name %>" />
 
-<!-- User Rating Form -->
-<% if (isAuthenticated) { %>
-  <form method="POST" action="/titles/<%= title._id %>/rate">
-    <label>Rate this title (1-5):</label>
-    <input type="number" name="rating" min="1" max="5" required>
-    <button type="submit">Submit</button>
+  <p><strong>Director:</strong> <%= title.director %></p>
+  <p><strong>Duration:</strong> <%= title.duration %> min</p>
+  <p><strong>Genre:</strong> <%= title.genre %></p>
+  <p><strong>Average Rating:</strong> 
+    <%= typeof title.averageRating === 'number' ? title.averageRating.toFixed(1) : '0.0' %> / 5
+  </p>
+
+  <!-- ⭐ Rating form -->
+  <form action="/titles/<%= title._id %>/rate" method="POST">
+    <label for="rating">Rate this film:</label>
+    <select name="rating" required>
+      <option disabled selected>Choose</option>
+      <option value="1">1 ★</option>
+      <option value="2">2 ★</option>
+      <option value="3">3 ★</option>
+      <option value="4">4 ★</option>
+      <option value="5">5 ★</option>
+    </select>
+    <button type="submit">Submit Rating</button>
   </form>
-<% } %>
+</section>
 
-<!-- Review Form -->
-<% if (isAuthenticated) { %>
-  <form method="POST" action="/titles/<%= title._id %>/reviews">
-    <input type="text" name="reviewTitle" placeholder="Review title" required>
-    <textarea name="content" placeholder="Your review" required></textarea>
+<hr>
+
+<!--  Reviews section -->
+<section class="reviews">
+  <h2>Reviews</h2>
+  <% if (reviews.length > 0) { %>
+    <% reviews.forEach(review => { %>
+      <div class="review">
+        <strong><%= review.user?.username || 'Anonymous' %></strong>
+        <h4><%= review.title %></h4>
+        <p><%= review.content %></p>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <p>No reviews yet. Be the first!</p>
+  <% } %>
+
+  <!-- ✍️ Review form -->
+  <form action="/titles/<%= title._id %>/reviews" method="POST">
+    <input type="text" name="reviewTitle" placeholder="Review Title" required />
+    <textarea name="content" placeholder="Your review..." required></textarea>
     <button type="submit">Post Review</button>
   </form>
-<% } %>
+</section>
 
-<!-- Reviews -->
-<h3>Reviews</h3>
-<% reviews.forEach(r => { %>
-  <div class="review">
-    <strong><%= r.user.username %></strong>
-    <span><%= helpers.formatDate(r.createdAt) %></span>
-    <p><%= r.title %>: <%= r.content %></p>
-
-    <% if (user && user._id === r.user._id) { %>
-      <a href="/reviews/<%= r._id %>/edit">Edit</a>
-      <form method="POST" action="/reviews/<%= r._id %>?_method=DELETE">
-        <button>Delete</button>
-      </form>
-    <% } %>
-  </div>
-<% }) %>
+<hr>
 
 <!-- Related Titles -->
-<h3>Similar Titles</h3>
-<ul>
-  <% relatedTitles.forEach(t => { %>
-    <li><a href="/titles/<%= t._id %>"><%= t.name %></a></li>
+<section class="related-titles">
+  <h2>You might also like</h2>
+  <% relatedTitles.forEach(movie => { %>
+    <div class="related-card">
+      <a href="/titles/<%= movie._id %>">
+        <img src="<%= movie.imageUrl %>" alt="<%= movie.name %>" />
+        <p><%= movie.name %></p>
+      </a>
+    </div>
   <% }) %>
-</ul>
+</section>
 
 <%- include('./partials/footer') %>

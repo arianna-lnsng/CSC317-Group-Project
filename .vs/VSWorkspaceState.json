@@ -1,16 +1,14 @@
 {
   "ExpandedNodes": [
     "",
+    "\\models",
     "\\public",
-    "\\public\\js",
+    "\\public\\css",
     "\\routes",
     "\\utils",
-    "\\views",
-    "\\views\\auth",
-    "\\views\\layouts",
-    "\\views\\partials",
-    "\\views\\user"
+    "\\utils\\seeders",
+    "\\views"
   ],
-  "SelectedNode": "\\public\\css\\style.css",
+  "SelectedNode": "\\utils\\importFilm.js",
   "PreviewInSolutionExplorer": false
 }
