@@ -1,69 +1,112 @@
 ﻿<%- include('./partials/header') %>
 
-<section class="title-detail">
-  <h1><%= title.name %> (<%= title.releaseYear %>)</h1>
-  <img src="<%= title.imageUrl %>" alt="<%= title.name %>" />
-
-  <p><strong>Director:</strong> <%= title.director %></p>
-  <p><strong>Duration:</strong> <%= title.duration %> min</p>
-  <p><strong>Genre:</strong> <%= title.genre %></p>
-  <p><strong>Average Rating:</strong> 
-    <%= typeof title.averageRating === 'number' ? title.averageRating.toFixed(1) : '0.0' %> / 5
-  </p>
-
-  <!-- ⭐ Rating form -->
-  <form action="/titles/<%= title._id %>/rate" method="POST">
-    <label for="rating">Rate this film:</label>
-    <select name="rating" required>
-      <option disabled selected>Choose</option>
-      <option value="1">1 ★</option>
-      <option value="2">2 ★</option>
-      <option value="3">3 ★</option>
-      <option value="4">4 ★</option>
-      <option value="5">5 ★</option>
-    </select>
-    <button type="submit">Submit Rating</button>
-  </form>
-</section>
-
-<hr>
-
-<!--  Reviews section -->
-<section class="reviews">
-  <h2>Reviews</h2>
-  <% if (reviews.length > 0) { %>
-    <% reviews.forEach(review => { %>
-      <div class="review">
-        <strong><%= review.user?.username || 'Anonymous' %></strong>
-        <h4><%= review.title %></h4>
-        <p><%= review.content %></p>
-      </div>
-    <% }) %>
-  <% } else { %>
-    <p>No reviews yet. Be the first!</p>
-  <% } %>
-
-  <!-- ✍️ Review form -->
-  <form action="/titles/<%= title._id %>/reviews" method="POST">
-    <input type="text" name="reviewTitle" placeholder="Review Title" required />
-    <textarea name="content" placeholder="Your review..." required></textarea>
-    <button type="submit">Post Review</button>
-  </form>
-</section>
-
-<hr>
-
-<!-- Related Titles -->
-<section class="related-titles">
-  <h2>You might also like</h2>
-  <% relatedTitles.forEach(movie => { %>
-    <div class="related-card">
-      <a href="/titles/<%= movie._id %>">
-        <img src="<%= movie.imageUrl %>" alt="<%= movie.name %>" />
-        <p><%= movie.name %></p>
-      </a>
+<div class="movie-detail-container">
+  <div class="movie-main">
+    <div class="movie-poster">
+      <img src="<%= title.imageUrl %>" alt="<%= title.name %> poster" />
     </div>
-  <% }) %>
-</section>
+    <div class="movie-info">
+      <h1 class="movie-title">
+        <%= title.name %>
+        <span class="movie-year">(<%= title.releaseYear %>)</span>
+      </h1>
+      <div class="movie-meta">
+        <span><strong>Director:</strong> <%= title.director %></span>
+        <span><strong>Genre:</strong> <%= title.genre %></span>
+        <span><strong>Duration:</strong> <%= title.duration %> min</span>
+      </div>
+      <div class="movie-rating">
+        <span class="star">★</span>
+        <span class="avg-rating"><%= typeof title.averageRating === 'number' ? title.averageRating.toFixed(1) : '0.0' %></span>
+        <span class="out-of">/ 5</span>
+        <span class="total-ratings">(<%= title.totalRatings %> ratings)</span>
+      </div>
+      <form class="rate-form" action="/titles/<%= title._id %>/rate" method="POST" id="star-rating-form">
+        <label>Your rating:</label>
+        <div class="star-rating-input">
+          <% for (let i = 1; i <= 5; i++) { %>
+            <span class="star-input" data-value="<%= i %>">★</span>
+          <% } %>
+        </div>
+        <input type="hidden" name="rating" id="star-rating-value" required />
+        <button type="submit">Rate</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="movie-reviews-section">
+    <h2>Reviews</h2>
+    <% if (reviews.length > 0) { %>
+      <div class="reviews-list">
+        <% reviews.forEach(review => { %>
+          <div class="review-card">
+            <div class="review-header">
+              <span class="review-user"><%= review.user?.username || 'Anonymous' %></span>
+              <span class="review-title"><%= review.title %></span>
+            </div>
+            <div class="review-content"><%= review.content %></div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="no-reviews">No reviews yet. Be the first!</p>
+    <% } %>
+    <form class="review-form" action="/titles/<%= title._id %>/reviews" method="POST">
+      <input type="text" name="reviewTitle" placeholder="Review Title" required />
+      <textarea name="content" placeholder="Your review..." required></textarea>
+      <button type="submit">Post Review</button>
+    </form>
+  </div>
+
+  <div class="related-titles-section">
+    <h2>You might also like</h2>
+    <div class="related-titles-list">
+      <% relatedTitles.forEach(movie => { %>
+        <div class="related-card">
+          <a href="/titles/<%= movie._id %>">
+            <img src="<%= movie.imageUrl %>" alt="<%= movie.name %> poster" />
+            <p><%= movie.name %></p>
+          </a>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</div>
 
 <%- include('./partials/footer') %>
+
+<script>
+// Interactive star rating
+(function() {
+  const stars = document.querySelectorAll('.star-rating-input .star-input');
+  const valueInput = document.getElementById('star-rating-value');
+  let selected = 0;
+  stars.forEach((star, idx) => {
+    star.addEventListener('mouseenter', () => {
+      highlightStars(idx + 1);
+    });
+    star.addEventListener('mouseleave', () => {
+      highlightStars(selected);
+    });
+    star.addEventListener('click', () => {
+      selected = idx + 1;
+      valueInput.value = selected;
+      highlightStars(selected);
+    });
+  });
+  function highlightStars(n) {
+    stars.forEach((star, i) => {
+      star.classList.toggle('active', i < n);
+    });
+  }
+  // Prevent submit if no star selected
+  document.getElementById('star-rating-form').addEventListener('submit', function(e) {
+    if (!valueInput.value) {
+      e.preventDefault();
+      highlightStars(0);
+      stars.forEach(star => star.classList.add('shake'));
+      setTimeout(() => stars.forEach(star => star.classList.remove('shake')), 400);
+    }
+  });
+})();
+</script>
