@@ -9,7 +9,12 @@ const Title = require('../models/Title');
 
 router.get('/', async (req, res) => {
     console.log('movies routes was triggered');///debug line
-    const titles = await Title.find().sort({ name: 'asc' }).limit(10);
+    const { search } = req.query;
+    let query = {};
+    if (search) {
+        query.$text = { $search: search };
+    }
+    const titles = await Title.find(query).sort({ name: 'asc' }).limit(50);
     res.render('movies', { title: 'Movies', titles });
 });
 

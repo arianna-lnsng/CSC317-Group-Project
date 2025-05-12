@@ -5,10 +5,10 @@
     <h2>Discover Your Next Favorite Story</h2>
     <p>Explore thousands of movies, share your thoughts, and connect with fellow enthusiasts.</p>
 
-    <div class="search-bar">
-      <input type="text" placeholder="Search for movies, authors, directors..." />
-      <button>Search</button>
-    </div>
+    <form class="search-bar" method="GET" action="/movies">
+      <input type="text" name="search" placeholder="Search for movies, authors, directors..." required />
+      <button type="submit">Search</button>
+    </form>
   </div>
 </section>
 

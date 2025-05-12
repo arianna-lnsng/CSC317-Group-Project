@@ -415,3 +415,60 @@ nav a {
     text-decoration: underline;
   }
   
+.site-footer {
+  background: var(--primary);
+  color: var(--text-light);
+  padding: 1.5rem 0 0.5rem 0;
+  margin-top: 2rem;
+  font-size: 1rem;
+  box-shadow: var(--shadow);
+}
+.site-footer hr {
+  border: none;
+  border-top: 1px solid var(--gray-medium);
+  margin-bottom: 1rem;
+}
+.site-footer a {
+  color: var(--accent-light);
+  text-decoration: none;
+  margin: 0 0.5rem;
+  transition: color 0.2s;
+}
+.site-footer a:hover {
+  color: var(--text-light);
+  text-decoration: underline;
+}
+
+/* Ensure footer sticks to bottom if content is short */
+html, body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main {
+  flex: 1;
+}
+
+/* About page feature list */
+.feature-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 1rem 0 1.5rem 0;
+}
+.feature-list li {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lead {
+  font-size: 1.2rem;
+  color: var(--gray-dark);
+  margin-bottom: 1.5rem;
+}
+

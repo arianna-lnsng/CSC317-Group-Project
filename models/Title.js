@@ -54,7 +54,7 @@ const titleSchema = new mongoose.Schema({
 });
 
 // Index for search functionality
-titleSchema.index({ name: 'text', genre: 'text' });
+titleSchema.index({ name: 'text', genre: 'text', director: 'text' });
 
 // Method to update average rating
 titleSchema.methods.updateAverageRating = async function(newRating, isNewRating) {

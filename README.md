@@ -164,7 +164,7 @@
 └── views/                # Server-side templates (e.g., EJS)
 
 ```
-*(Note: `node_modules`, `.git`, and other configuration-specific hidden files/directories are typically omitted from this view for clarity)*
+*(Note: `node_modules`, `.git`, and other configuration-specific hidden files/directories are omitted from this view for clarity)*
 
 ## Backend API Documentation
 
