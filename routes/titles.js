@@ -17,7 +17,7 @@ router.get('/:id', async (req, res) => {
             error: { status: 404 }
         });
     }
-    const reviews = await Review.find({ titleId: title._id }).populate('user');
+    const reviews = await Review.find({ titleId: title._id }).populate('userId', 'username');
     const relatedTitles = await Title.find({ genre: title.genre, _id: { $ne: title._id } }).limit(4);
     res.render('titles', { title, reviews, relatedTitles });
 });

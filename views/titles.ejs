@@ -41,7 +41,7 @@
         <% reviews.forEach(review => { %>
           <div class="review-card">
             <div class="review-header">
-              <span class="review-user"><%= review.user?.username || 'Anonymous' %></span>
+              <span class="review-user"><%= review.userId?.username || 'Anonymous' %></span>
               <span class="review-title"><%= review.title %></span>
             </div>
             <div class="review-content"><%= review.content %></div>
