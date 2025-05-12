@@ -177,10 +177,10 @@ Represents a film in the database.
   name: String,          // Film title
   director: String,      // Film director
   duration: Number,      // Length in minutes
-  imageUrl: String,      // Poster image URL
+  imageUrl: String,      // Poster image URL (IMDB/TMDB/alternate)
   genre: String,         // Film genre
   releaseYear: Number,   // Year of release
-  averageRating: Number, // Calculated average rating
+  averageRating: Number, // Seeded with a realistic value
   totalRatings: Number,  // Number of ratings received
   keywords: [String]     // Related keywords/tags
 }
@@ -284,3 +284,26 @@ Common HTTP Status Codes:
 - 403: Forbidden
 - 404: Not Found
 - 500: Internal Server Error
+
+## Seeded Movies
+
+The database is seeded with 14 classic and popular films, each with a realistic average rating based on critical and audience reputation. The current seed set is:
+
+- The Shawshank Redemption (4.9)
+- The Godfather (4.9)
+- Inception (4.7)
+- Scream (4.0)
+- Twilight (3.2)
+- The Grand Budapest Hotel (4.3)
+- Pulp Fiction (4.8)
+- Toy Story (4.6)
+- Jurassic Park (4.5)
+- Forrest Gump (4.7)
+- The Matrix (4.7)
+- The Dark Knight (4.8)
+- Interstellar (4.6)
+- Parasite (4.6)
+
+Poster images are a mix of IMDB and TMDB poster URLs, with some alternate covers for variety and reliability.
+
+The search and autocomplete features are designed to work with these 14 movies, supporting search by title and director.
