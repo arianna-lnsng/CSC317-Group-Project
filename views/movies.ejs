@@ -1,28 +1,35 @@
 ﻿<%- include('./partials/header') %>
 
-<h1 class="mt-2 text-center">Movies</h1>
+<div class="movies-page-container">
+  <div class="movies-header-row">
+    <h1 class="movies-heading">Browse Movies</h1>
+    <form class="search-bar" method="GET" action="/movies">
+      <input type="text" name="search" placeholder="Search movies, directors..." value="<%= typeof search !== 'undefined' ? search : '' %>" />
+      <button type="submit">🔍</button>
+    </form>
+  </div>
 
-<% if (!titles || titles.length === 0) { %>
-  <p class="text-center">No movies found.</p>
-<% } else { %>
-  <div class="cards-grid container mt-2">
-    <% titles.forEach(movie => { %>
-      <div class="card">
-        <img src="<%= movie.imageUrl || '/default.jpg' %>" alt="<%= movie.name %>" class="card-image" />
-        <div class="card-content">
-          <div class="card-title"><%= movie.name %></div>
-          <div class="card-meta">
-            <span><%= movie.genre %></span>
-            <span><%= movie.releaseYear %></span>
-          </div>
-          <div class="rating">★ <%= typeof movie.averageRating === 'number' ? movie.averageRating.toFixed(1) : '0.0' %></div>
-          <div class="card-footer">
-            <a href="/titles/<%= movie._id %>">View Details</a>
+  <% if (!titles || titles.length === 0) { %>
+    <p class="text-center no-movies">No movies found.</p>
+  <% } else { %>
+    <div class="movies-grid">
+      <% titles.forEach(movie => { %>
+        <div class="movie-card">
+          <a href="/titles/<%= movie._id %>">
+            <img src="<%= movie.imageUrl || '/default.jpg' %>" alt="<%= movie.name %> poster" class="movie-card-poster" />
+          </a>
+          <div class="movie-card-info">
+            <a href="/titles/<%= movie._id %>" class="movie-card-title"><%= movie.name %></a>
+            <div class="movie-card-meta">
+              <span class="movie-card-genre"><%= movie.genre %></span>
+              <span class="movie-card-year">• <%= movie.releaseYear %></span>
+            </div>
+            <div class="movie-card-rating">★ <%= typeof movie.averageRating === 'number' ? movie.averageRating.toFixed(1) : '0.0' %></div>
           </div>
         </div>
-      </div>
-    <% }) %>
-  </div>
-<% } %>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
 
 <%- include('./partials/footer') %>

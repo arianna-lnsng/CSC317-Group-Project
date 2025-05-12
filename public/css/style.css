@@ -766,3 +766,298 @@ main {
   40%, 60% { transform: translateX(4px); }
 }
 
+/* Movies Page Redesign */
+.movies-page-container {
+  max-width: 1200px;
+  margin: 2.5rem auto 2rem auto;
+  padding: 0 1rem;
+}
+.movies-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2.2rem;
+}
+.movies-heading {
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.movies-page-container .search-bar {
+  max-width: 340px;
+  min-width: 180px;
+  margin: 0;
+  box-shadow: none;
+  border-radius: var(--radius);
+  border: 1px solid var(--gray-medium);
+  background: #fff;
+}
+.movies-page-container .search-bar input {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+.movies-page-container .search-bar button {
+  background: var(--accent);
+  color: var(--text-light);
+  border: none;
+  padding: 0 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  transition: background 0.2s;
+}
+.movies-page-container .search-bar button:hover {
+  background: var(--accent-light);
+}
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 2rem;
+}
+.movie-card {
+  background: var(--gray-light);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.1rem 1rem 1.2rem 1rem;
+  transition: box-shadow 0.18s, transform 0.18s;
+}
+.movie-card:hover {
+  box-shadow: 0 8px 24px rgba(75,95,165,0.10);
+  transform: translateY(-3px) scale(1.025);
+}
+.movie-card-poster {
+  width: 120px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  background: #eee;
+  margin-bottom: 0.7rem;
+}
+.movie-card-info {
+  width: 100%;
+  text-align: center;
+}
+.movie-card-title {
+  font-size: 1.13rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: none;
+  margin-bottom: 0.2em;
+  display: block;
+  transition: color 0.18s;
+}
+.movie-card-title:hover {
+  color: var(--accent);
+}
+.movie-card-meta {
+  color: var(--gray-dark);
+  font-size: 0.98em;
+  margin-bottom: 0.2em;
+}
+.movie-card-genre {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.movie-card-year {
+  margin-left: 0.4em;
+}
+.movie-card-rating {
+  color: #f59e0b;
+  font-size: 1.08em;
+  font-weight: 600;
+  margin-top: 0.2em;
+}
+.no-movies {
+  color: var(--gray-dark);
+  font-size: 1.1em;
+  margin-top: 2.5rem;
+}
+@media (max-width: 700px) {
+  .movies-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+  .movies-heading {
+    font-size: 1.5rem;
+  }
+  .movies-grid {
+    gap: 1.1rem;
+  }
+  .movie-card {
+    padding: 0.7rem 0.5rem 1rem 0.5rem;
+  }
+  .movie-card-poster {
+    width: 90px;
+    height: 135px;
+  }
+}
+
+/* Header & Navbar Redesign */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.home-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  background: none;
+  border-radius: var(--radius);
+  padding: 0.2em 0.5em;
+  transition: background 0.18s, color 0.18s;
+}
+.home-link.active, .home-link:hover {
+  background: var(--gray-light);
+  color: var(--accent-light);
+}
+.home-icon {
+  font-size: 1.3em;
+  margin-right: 0.1em;
+}
+.brand-text {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-links li {
+  display: flex;
+  align-items: center;
+}
+.nav-links a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.05rem;
+  padding: 0.4em 0.9em;
+  border-radius: var(--radius);
+  transition: background 0.18s, color 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+.nav-links a.active, .nav-links a:hover {
+  background: var(--accent-light);
+  color: var(--text-light);
+}
+.nav-icon {
+  font-size: 1.2em;
+  margin-left: 0.1em;
+}
+.nav-auth-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-left: 2.2rem;
+}
+.auth-icon {
+  color: var(--accent);
+  background: #fff;
+  border-radius: 50%;
+  font-size: 1.25em;
+  padding: 0.32em 0.38em;
+  display: flex;
+  align-items: center;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 2px 8px rgba(75,95,165,0.07);
+  text-decoration: none;
+  position: relative;
+}
+.auth-icon.active, .auth-icon:hover, .auth-icon:focus {
+  background: var(--accent);
+  color: var(--text-light);
+  box-shadow: 0 4px 16px rgba(75,95,165,0.13);
+}
+.auth-icon span {
+  pointer-events: none;
+}
+@media (max-width: 700px) {
+  .navbar {
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: flex-start;
+  }
+  .nav-links {
+    gap: 0.7rem;
+  }
+  .nav-auth-icons {
+    margin-left: 0;
+    gap: 0.5rem;
+  }
+}
+
+/* About Page Accessibility & Contrast */
+.about-hero {
+  background: linear-gradient(90deg, #374151 60%, #4b5fa5 100%);
+  color: #fff;
+  padding-bottom: 2.5rem;
+}
+.about-hero .brand {
+  color: #ffe066;
+}
+.about-main-bg {
+  background: #f9fafb;
+  padding: 2.5rem 0 2.5rem 0;
+}
+.about-section, .tech-stack {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 12px rgba(55,65,81,0.07);
+  padding: 2rem 2.2rem 1.5rem 2.2rem;
+  margin-bottom: 2.2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.about-section h2, .tech-stack h2 {
+  color: var(--primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.about-section p, .tech-stack ul {
+  color: var(--text-dark);
+  font-size: 1.08rem;
+}
+.about-section ul.feature-list li, .tech-stack ul.feature-list li {
+  color: var(--primary);
+  font-size: 1.08rem;
+  margin-bottom: 0.4em;
+}
+@media (max-width: 700px) {
+  .about-section, .tech-stack {
+    padding: 1.1rem 0.7rem 1rem 0.7rem;
+  }
+}
+

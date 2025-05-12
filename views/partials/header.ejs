@@ -10,23 +10,26 @@
   <header>
     <nav class="navbar">
       <div class="logo">
-        <a href="/">After the Credits</a>
+        <a href="/" class="home-link <%= path === '/' ? 'active' : '' %>">
+          <span class="home-icon" aria-label="Home">🏠</span>
+          <span class="brand-text">After the Credits</span>
+        </a>
       </div>
       <ul class="nav-links">
-        <li><a href="/" class="<%= path === '/' ? 'active' : '' %>">Home</a></li>
         <li><a href="/about" class="<%= path === '/about' ? 'active' : '' %>">About</a></li>
         <li><a href="/movies" class="<%= path === '/movies' ? 'active' : '' %>">Movies</a></li>
-
-        
         <% if (isAuthenticated) { %>
           <li><a href="/user/profile" class="<%= path === '/user/profile' ? 'active' : '' %>">Profile</a></li>
           <li><a href="/user/settings" class="<%= path === '/user/settings' ? 'active' : '' %>">Settings</a></li>
-          <li><a href="/auth/logout">Logout</a></li>
-        <% } else { %>
-          <li><a href="/auth/login" class="<%= path === '/auth/login' ? 'active' : '' %>">Login</a></li>
-          <li><a href="/auth/register" class="<%= path === '/auth/register' ? 'active' : '' %>">Register</a></li>
+          <li><a href="/auth/logout" title="Logout"><span class="nav-icon" aria-label="Logout">🚪</span></a></li>
         <% } %>
       </ul>
+      <% if (!isAuthenticated) { %>
+      <div class="nav-auth-icons">
+        <a href="/auth/login" class="auth-icon <%= path === '/auth/login' ? 'active' : '' %>" title="Login"><span aria-label="Login">🔑</span></a>
+        <a href="/auth/register" class="auth-icon <%= path === '/auth/register' ? 'active' : '' %>" title="Register"><span aria-label="Register">👤</span></a>
+      </div>
+      <% } %>
     </nav>
   </header>
 
