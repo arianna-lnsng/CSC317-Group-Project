@@ -124,6 +124,50 @@ const titles = [
     averageRating: 0,
     totalRatings: 0,
     keywords: ['crime', 'hitmen', 'Quentin Tarantino']
+  },
+  {
+    name: 'Toy Story',
+    director: 'John Lasseter',
+    duration: 81,
+    imageUrl: 'https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZjQwLTg5NzItYzZlYWRjYjE2YzM3XkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_.jpg',
+    genre: 'animation',
+    releaseYear: 1995,
+    averageRating: 0,
+    totalRatings: 0,
+    keywords: ['animation', 'pixar', 'adventure', 'family']
+  },
+  {
+    name: 'Jurassic Park',
+    director: 'Steven Spielberg',
+    duration: 127,
+    imageUrl: 'https://m.media-amazon.com/images/M/MV5BNjViNWYwZTAtYjQwZi00ZTIwLTg2YjMtYjQzYjYzYjYzYjYzXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg',
+    genre: 'adventure',
+    releaseYear: 1993,
+    averageRating: 0,
+    totalRatings: 0,
+    keywords: ['dinosaurs', 'adventure', 'spielberg']
+  },
+  {
+    name: 'Forrest Gump',
+    director: 'Robert Zemeckis',
+    duration: 142,
+    imageUrl: 'https://m.media-amazon.com/images/M/MV5BNWIwODRlZTAtYzYwZi00ZTIwLTg2YjMtYjQzYjYzYjYzYjYzXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg',
+    genre: 'drama',
+    releaseYear: 1994,
+    averageRating: 0,
+    totalRatings: 0,
+    keywords: ['drama', 'oscar', 'classic']
+  },
+  {
+    name: 'The Matrix',
+    director: 'Lana Wachowski, Lilly Wachowski',
+    duration: 136,
+    imageUrl: 'https://m.media-amazon.com/images/M/MV5BNzQzOTk3NjAtNDQyZi00ZTIwLTg2YjMtYjQzYjYzYjYzYjYzXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg',
+    genre: 'sci-fi',
+    releaseYear: 1999,
+    averageRating: 0,
+    totalRatings: 0,
+    keywords: ['sci-fi', 'action', 'matrix']
   }
 ];
 

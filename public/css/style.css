@@ -472,3 +472,26 @@ main {
   margin-bottom: 1.5rem;
 }
 
+.autocomplete-suggestions {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: #fff;
+  border: 1px solid var(--gray-medium);
+  margin-top: 2px;
+  font-size: 1rem;
+  color: var(--text-dark);
+  max-height: 220px;
+  overflow-y: auto;
+}
+.autocomplete-suggestion {
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.15s;
+}
+.autocomplete-suggestion:hover {
+  background: var(--gray-light);
+}
+

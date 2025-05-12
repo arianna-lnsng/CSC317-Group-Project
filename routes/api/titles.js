@@ -82,4 +82,20 @@ router.delete('/:id',
   titleController.deleteTitle
 );
 
+// Suggestion endpoint for autocomplete
+router.get('/suggest', async (req, res) => {
+  const { query } = req.query;
+  if (!query || query.length < 1) {
+    return res.json([]);
+  }
+  const regex = new RegExp(query, 'i');
+  const suggestions = await require('../../models/Title').find({
+    $or: [
+      { name: regex },
+      { director: regex }
+    ]
+  }, 'name _id imageUrl').limit(7);
+  res.json(suggestions);
+});
+
 module.exports = router;

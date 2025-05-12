@@ -10,9 +10,16 @@ const Review = require('../models/Review');
 // GET title detail
 router.get('/:id', async (req, res) => {
     const title = await Title.findById(req.params.id);
+    if (!title) {
+        return res.status(404).render('error', { 
+            title: 'Movie Not Found', 
+            message: 'Sorry, that movie could not be found.', 
+            error: { status: 404 }
+        });
+    }
     const reviews = await Review.find({ titleId: title._id }).populate('user');
     const relatedTitles = await Title.find({ genre: title.genre, _id: { $ne: title._id } }).limit(4);
-    res.render('title', { title, reviews, relatedTitles });
+    res.render('titles', { title, reviews, relatedTitles });
 });
 
 // POST rating
