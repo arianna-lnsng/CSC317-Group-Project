@@ -1108,4 +1108,9 @@ main {
 #search-suggestions .autocomplete-suggestion:hover {
   background: var(--gray-light);
 }
+#search-suggestions .autocomplete-suggestion.active {
+  background: var(--accent-light);
+  color: #fff;
+  font-weight: 600;
+}
 
