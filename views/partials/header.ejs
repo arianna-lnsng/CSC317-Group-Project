@@ -24,22 +24,13 @@
         <% if (isAuthenticated) { %>
           <li><a href="/user/profile" class="<%= path === '/user/profile' ? 'active' : '' %>">Profile</a></li>
           <li><a href="/user/settings" class="<%= path === '/user/settings' ? 'active' : '' %>">Settings</a></li>
-          <li><a href="/auth/logout" title="Logout" aria-label="Logout"><span class="nav-icon">
-            <!-- Logout SVG -->
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          </span></a></li>
+          <li><a href="/auth/logout" title="Logout" aria-label="Logout">Logout</a></li>
         <% } %>
       </ul>
       <% if (!isAuthenticated) { %>
       <div class="nav-auth-icons">
-        <a href="/auth/login" class="auth-icon <%= path === '/auth/login' ? 'active' : '' %>" title="Login" aria-label="Login">
-          <!-- Login SVG -->
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-        </a>
-        <a href="/auth/register" class="auth-icon <%= path === '/auth/register' ? 'active' : '' %>" title="Register" aria-label="Register">
-          <!-- User SVG -->
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a8.38 8.38 0 0 1 13 0"/></svg>
-        </a>
+        <a href="/auth/login" class="auth-link <%= path === '/auth/login' ? 'active' : '' %>" title="Login" aria-label="Login">Login</a>
+        <a href="/auth/register" class="auth-link <%= path === '/auth/register' ? 'active' : '' %>" title="Register" aria-label="Register">Register</a>
       </div>
       <% } %>
     </nav>

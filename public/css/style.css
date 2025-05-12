@@ -92,11 +92,12 @@ body {
 header {
     background-color: var(--primary);
     color: var(--text-light);
-    padding: 1rem 0;
     box-shadow: var(--shadow);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
+    width: 100%;
+    transition: box-shadow 0.18s, background 0.18s;
 }
 
 .header-container {
@@ -450,6 +451,7 @@ body {
 }
 main {
   flex: 1;
+  margin-top: 0;
 }
 
 /* About page feature list */
@@ -735,6 +737,10 @@ main {
   .related-card img {
     height: 110px;
   }
+  header {
+    position: sticky;
+    top: 0;
+  }
 }
 
 /* Interactive Star Rating */
@@ -904,7 +910,7 @@ main {
   }
 }
 
-/* Header & Navbar Redesign */
+/* Header & Navbar Redesign (Text Only) */
 .navbar {
   display: flex;
   align-items: center;
@@ -921,7 +927,6 @@ main {
 .home-link {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--accent);
@@ -934,10 +939,6 @@ main {
 .home-link.active, .home-link:hover {
   background: var(--gray-light);
   color: var(--accent-light);
-}
-.home-icon {
-  font-size: 1.3em;
-  margin-right: 0.1em;
 }
 .brand-text {
   font-weight: 800;
@@ -971,36 +972,30 @@ main {
   background: var(--accent-light);
   color: var(--text-light);
 }
-.nav-icon {
-  font-size: 1.2em;
-  margin-left: 0.1em;
-}
 .nav-auth-icons {
   display: flex;
   align-items: center;
   gap: 0.7rem;
   margin-left: 2.2rem;
 }
-.auth-icon {
+.auth-link {
   color: var(--accent);
   background: #fff;
-  border-radius: 50%;
-  font-size: 1.25em;
-  padding: 0.32em 0.38em;
+  border-radius: var(--radius);
+  font-size: 1.05em;
+  padding: 0.32em 0.95em;
   display: flex;
   align-items: center;
   transition: background 0.18s, color 0.18s, box-shadow 0.18s;
   box-shadow: 0 2px 8px rgba(75,95,165,0.07);
   text-decoration: none;
   position: relative;
+  font-weight: 600;
 }
-.auth-icon.active, .auth-icon:hover, .auth-icon:focus {
+.auth-link.active, .auth-link:hover, .auth-link:focus {
   background: var(--accent);
   color: var(--text-light);
   box-shadow: 0 4px 16px rgba(75,95,165,0.13);
-}
-.auth-icon span {
-  pointer-events: none;
 }
 @media (max-width: 700px) {
   .navbar {
