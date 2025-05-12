@@ -1070,3 +1070,42 @@ main {
   }
 }
 
+/* Movies Page Search Suggestions */
+#search-suggestions.autocomplete-suggestions {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background: #fff;
+  border: 1px solid var(--gray-medium);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  z-index: 1002;
+  max-height: 260px;
+  overflow-y: auto;
+  margin-top: -2px;
+  display: none;
+}
+.movies-header-row {
+  position: relative;
+}
+#search-suggestions .autocomplete-suggestion {
+  background: #fff;
+  color: var(--primary);
+  font-size: 1rem;
+  padding: 0.5rem 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--gray-light);
+  transition: background 0.15s;
+}
+#search-suggestions .autocomplete-suggestion:last-child {
+  border-bottom: none;
+}
+#search-suggestions .autocomplete-suggestion:hover {
+  background: var(--gray-light);
+}
+

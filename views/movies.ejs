@@ -3,10 +3,11 @@
 <div class="movies-page-container">
   <div class="movies-header-row">
     <h1 class="movies-heading">Browse Movies</h1>
-    <form class="search-bar" method="GET" action="/movies">
-      <input type="text" name="search" placeholder="Search movies, directors..." value="<%= typeof search !== 'undefined' ? search : '' %>" />
+    <form class="search-bar" method="GET" action="/movies" autocomplete="off">
+      <input type="text" name="search" id="movies-search-input" placeholder="Search movies, directors..." value="<%= typeof search !== 'undefined' ? search : '' %>" />
       <button type="submit">🔍</button>
     </form>
+    <div id="search-suggestions" class="autocomplete-suggestions"></div>
   </div>
 
   <% if (!titles || titles.length === 0) { %>
@@ -33,3 +34,50 @@
 </div>
 
 <%- include('./partials/footer') %>
+
+<script>
+(function() {
+  const input = document.getElementById('movies-search-input');
+  const suggestionBox = document.getElementById('search-suggestions');
+  let lastQuery = '';
+  let blurTimeout;
+  if (!input || !suggestionBox) return;
+  input.addEventListener('input', async function() {
+    const q = this.value.trim();
+    lastQuery = q;
+    if (q.length < 2) {
+      suggestionBox.style.display = 'none';
+      suggestionBox.innerHTML = '';
+      return;
+    }
+    const res = await fetch(`/api/titles/suggest?query=${encodeURIComponent(q)}`);
+    const suggestions = await res.json();
+    if (input.value.trim() !== lastQuery) return; // Prevent race
+    if (suggestions.length === 0) {
+      suggestionBox.style.display = 'none';
+      suggestionBox.innerHTML = '';
+      return;
+    }
+    suggestionBox.innerHTML = suggestions.map(s =>
+      `<div class="autocomplete-suggestion" data-id="${s._id}" style="padding:0.5rem;cursor:pointer;display:flex;align-items:center;gap:0.5rem;">
+        <img src="${s.imageUrl || '/default.jpg'}" alt="" style="width:32px;height:48px;object-fit:cover;border-radius:4px;" />
+        <span>${s.name}</span>
+      </div>`
+    ).join('');
+    suggestionBox.style.display = 'block';
+  });
+  suggestionBox.addEventListener('mousedown', function(e) {
+    const target = e.target.closest('.autocomplete-suggestion');
+    if (target) {
+      window.location.href = `/titles/${target.dataset.id}`;
+    }
+  });
+  input.addEventListener('blur', function() {
+    blurTimeout = setTimeout(() => { suggestionBox.style.display = 'none'; }, 120);
+  });
+  input.addEventListener('focus', function() {
+    if (suggestionBox.innerHTML) suggestionBox.style.display = 'block';
+    clearTimeout(blurTimeout);
+  });
+})();
+</script>
