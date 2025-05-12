@@ -55,7 +55,7 @@ const titles = [
     imageUrl: 'https://m.media-amazon.com/images/M/MV5BNDE3ODcxYzMtY2YzZC00NmNlLWJiNDMtZDViZWM2MzIxZDYwXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_.jpg',
     genre: 'drama',
     releaseYear: 1994,
-    averageRating: 0,
+    averageRating: 4.9,
     totalRatings: 0,
     keywords: ['prison', 'drama', 'classic']
   },
@@ -66,7 +66,7 @@ const titles = [
     imageUrl: 'https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg',
     genre: 'crime',
     releaseYear: 1972,
-    averageRating: 0,
+    averageRating: 4.9,
     totalRatings: 0,
     keywords: ['mafia', 'crime', 'drama', 'classic']
   },
@@ -77,7 +77,7 @@ const titles = [
     imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg',
     genre: 'sci-fi',
     releaseYear: 2010,
-    averageRating: 0,
+    averageRating: 4.7,
     totalRatings: 0,
     keywords: ['dreams', 'heist', 'sci-fi', 'action']
   },
@@ -88,7 +88,7 @@ const titles = [
     imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjA2NjU5MTg5OF5BMl5BanBnXkFtZTgwOTkyMzQxMDE@._V1_FMjpg_UX904_.jpg',
     genre: 'horror',
     releaseYear: 1996,
-    averageRating: 0,
+    averageRating: 4.0,
     totalRatings: 0,
     keywords: ['horror', 'slasher', 'mystery', 'thriller', 'suspense']
   },
@@ -99,7 +99,7 @@ const titles = [
     imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTQ2NzUxMTAxN15BMl5BanBnXkFtZTcwMzEyMTIwMg@@._V1_QL75_UX285_CR0,0,285,422_.jpg',
     genre: 'romantic fantasy',
     releaseYear: 2008,
-    averageRating: 0,
+    averageRating: 3.2,
     totalRatings: 0,
     keywords: ['vampire', 'romance', 'supernatural']
   },
@@ -110,7 +110,7 @@ const titles = [
     imageUrl: 'https://m.media-amazon.com/images/M/MV5BMzM5NjUxOTEyMl5BMl5BanBnXkFtZTgwNjEyMDM0MDE@._V1_QL75_UX380_CR0,0,380,562_.jpg',
     genre: 'comedy',
     releaseYear: 2014,
-    averageRating: 0,
+    averageRating: 4.3,
     totalRatings: 0,
     keywords: ['Wes Anderson', 'mystery', 'adventure', 'comedy']
   },
@@ -121,7 +121,7 @@ const titles = [
     imageUrl: 'https://m.media-amazon.com/images/I/71c05lTE03L._AC_SY679_.jpg',
     genre: 'crime',
     releaseYear: 1994,
-    averageRating: 0,
+    averageRating: 4.8,
     totalRatings: 0,
     keywords: ['crime', 'hitmen', 'Quentin Tarantino']
   },
@@ -132,7 +132,7 @@ const titles = [
     imageUrl: 'https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZjQwLTg5NzItYzZlYWRjYjE2YzM3XkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_.jpg',
     genre: 'animation',
     releaseYear: 1995,
-    averageRating: 0,
+    averageRating: 4.6,
     totalRatings: 0,
     keywords: ['animation', 'pixar', 'adventure', 'family']
   },
@@ -143,7 +143,7 @@ const titles = [
     imageUrl: 'https://m.media-amazon.com/images/M/MV5BNjViNWYwZTAtYjQwZi00ZTIwLTg2YjMtYjQzYjYzYjYzYjYzXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg',
     genre: 'adventure',
     releaseYear: 1993,
-    averageRating: 0,
+    averageRating: 4.5,
     totalRatings: 0,
     keywords: ['dinosaurs', 'adventure', 'spielberg']
   },
@@ -154,7 +154,7 @@ const titles = [
     imageUrl: 'https://m.media-amazon.com/images/M/MV5BNWIwODRlZTAtYzYwZi00ZTIwLTg2YjMtYjQzYjYzYjYzYjYzXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg',
     genre: 'drama',
     releaseYear: 1994,
-    averageRating: 0,
+    averageRating: 4.7,
     totalRatings: 0,
     keywords: ['drama', 'oscar', 'classic']
   },
@@ -165,7 +165,7 @@ const titles = [
     imageUrl: 'https://m.media-amazon.com/images/M/MV5BNzQzOTk3NjAtNDQyZi00ZTIwLTg2YjMtYjQzYjYzYjYzYjYzXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg',
     genre: 'sci-fi',
     releaseYear: 1999,
-    averageRating: 0,
+    averageRating: 4.7,
     totalRatings: 0,
     keywords: ['sci-fi', 'action', 'matrix']
   },
@@ -176,7 +176,7 @@ const titles = [
     imageUrl: 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
     genre: 'action',
     releaseYear: 2008,
-    averageRating: 0,
+    averageRating: 4.8,
     totalRatings: 0,
     keywords: ['batman', 'joker', 'dc', 'action']
   },
@@ -187,7 +187,7 @@ const titles = [
     imageUrl: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
     genre: 'sci-fi',
     releaseYear: 2014,
-    averageRating: 0,
+    averageRating: 4.6,
     totalRatings: 0,
     keywords: ['space', 'nolan', 'sci-fi', 'drama']
   },
@@ -198,7 +198,7 @@ const titles = [
     imageUrl: 'https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg',
     genre: 'thriller',
     releaseYear: 2019,
-    averageRating: 0,
+    averageRating: 4.6,
     totalRatings: 0,
     keywords: ['korean', 'thriller', 'oscar']
   }
