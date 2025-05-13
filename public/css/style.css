@@ -744,33 +744,49 @@ main {
 }
 
 /* Interactive Star Rating */
-.star-rating-input {
-  display: flex;
-  gap: 0.18em;
-  font-size: 2.1em;
-  margin: 0.2em 0 0.7em 0;
-  user-select: none;
-}
-.star-input {
-  color: var(--gray-medium);
-  cursor: pointer;
-  transition: color 0.18s, transform 0.1s;
-}
-.star-input.active,
-.star-input:hover,
-.star-input:focus {
-  color: #f59e0b;
-  text-shadow: 0 2px 8px rgba(245,158,11,0.13);
-}
-.star-input.shake {
-  animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-}
-@keyframes shake {
-  10%, 90% { transform: translateX(-1px); }
-  20%, 80% { transform: translateX(2px); }
-  30%, 50%, 70% { transform: translateX(-4px); }
-  40%, 60% { transform: translateX(4px); }
-}
+
+  .star-rating-input {
+    display: inline-flex;
+    gap: 5px;
+    margin: 10px 0;
+    cursor: pointer;
+  }
+
+  .star-input {
+    font-size: 2rem;
+    color: #ccc;
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  .star-input.active {
+    color: gold;
+  }
+
+  .star-input.shake {
+    animation: shake 0.3s;
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    50% { transform: translateX(3px); }
+    75% { transform: translateX(-3px); }
+    100% { transform: translateX(0); }
+  }
+
+  #star-rating-form button {
+    margin-top: 10px;
+    padding: 6px 12px;
+    background-color: #222;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  #star-rating-form button:hover {
+    background-color: #444;
+  }
 
 /* Movies Page Redesign */
 .movies-page-container {
@@ -939,6 +955,7 @@ main {
   justify-content: flex-end;
   gap: 0.7rem;
 }
+
 .brand-link {
   color: var(--accent);
   font-size: 1.18rem;
@@ -985,6 +1002,52 @@ main {
 .nav-auth {
   gap: 0.7rem;
 }
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  margin-left: 20px; /* Add space between toggle and other links */
+  color: var(--primary-text-color); /* Default color */
+  transition: color 0.3s ease;
+}
+
+/* When dark mode is active */
+body.dark-mode .dark-mode-toggle {
+  color: var(--secondary-text-color); /* Change the color when dark mode is active */
+}
+
+/* Hover effect for the toggle button */
+.dark-mode-toggle:hover {
+  opacity: 0.7;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+  background-color: var(--dark-bg-color);
+  color: var(--dark-text-color);
+}
+
+body.dark-mode .navbar {
+  background-color: var(--dark-navbar-bg-color);
+}
+
+body.dark-mode .navbar .nav-links a {
+  color: var(--dark-navbar-link-color);
+}
+
+body.dark-mode .navbar .nav-links a.active {
+  color: var(--dark-active-link-color);
+}
+
+/* Other content changes for dark mode */
+body.dark-mode main {
+  background-color: var(--dark-main-bg-color);
+  color: var(--dark-main-text-color);
+}
+
+
 .auth-link {
   color: var(--accent);
   background: #fff;

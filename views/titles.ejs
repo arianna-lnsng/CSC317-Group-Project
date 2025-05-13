@@ -24,9 +24,19 @@
       <form class="rate-form" action="/titles/<%= title._id %>/rate" method="POST" id="star-rating-form">
         <label>Your rating:</label>
         <div class="star-rating-input">
-          <% for (let i = 1; i <= 5; i++) { %>
-            <span class="star-input" data-value="<%= i %>">★</span>
-          <% } %>
+          <%
+          const labels = {
+            1: '1 - Terrible',
+            2: '2 - Bad',
+            3: '3 - Okay',
+            4: '4 - Good',
+            5: '5 - Amazing'
+          };
+        %>
+        <% for (let i = 1; i <= 5; i++) { %>
+          <span class="star-input" data-value="<%= i %>" title="<%= labels[i] %>">★</span>
+        <% } %>
+        
         </div>
         <input type="hidden" name="rating" id="star-rating-value" required />
         <button type="submit">Rate</button>

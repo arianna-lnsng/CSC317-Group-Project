@@ -6,6 +6,23 @@
     <form class="search-bar" method="GET" action="/movies" autocomplete="off">
       <input type="text" name="search" id="movies-search-input" placeholder="Search movies, directors..." value="<%= typeof search !== 'undefined' ? search : '' %>" autocomplete="off" />
       <button type="submit">🔍</button>
+      <!-- Sorting Dropdowns wrapped in the same form -->
+    <div class="sort-options">
+      <!-- Sort by field -->
+      <label for="sortBy">Sort By:</label>
+      <select name="sortBy" id="sortBy" class="sort-dropdown" onchange="this.form.submit()">
+        <option value="name" <%= sortBy === 'name' ? 'selected' : '' %>>Name</option>
+        <option value="releaseYear" <%= sortBy === 'releaseYear' ? 'selected' : '' %>>Release Year</option>
+        <option value="averageRating" <%= sortBy === 'averageRating' ? 'selected' : '' %>>Rating</option>
+      </select>
+
+      <!-- Sort order -->
+      <label for="sortOrder">Order:</label>
+      <select name="sortOrder" id="sortOrder" class="sort-order-dropdown" onchange="this.form.submit()">
+        <option value="asc" <%= sortOrder === 'asc' ? 'selected' : '' %>>Ascending</option>
+        <option value="desc" <%= sortOrder === 'desc' ? 'selected' : '' %>>Descending</option>
+      </select>
+    </div>
     </form>
     <div id="search-suggestions" class="autocomplete-suggestions"></div>
   </div>
@@ -26,16 +43,21 @@
               <span class="movie-card-year">• <%= movie.releaseYear %></span>
             </div>
             <div class="movie-card-rating">★ <%= typeof movie.averageRating === 'number' ? movie.averageRating.toFixed(1) : '0.0' %></div>
+          
           </div>
         </div>
       <% }) %>
     </div>
   <% } %>
 </div>
+           
+      
+           
 
-<%- include('./partials/footer') %>
+ <%- include('./partials/footer') %> 
 
 <script>
+   
 (function() {
   const input = document.getElementById('movies-search-input');
   const suggestionBox = document.getElementById('search-suggestions');
@@ -113,4 +135,9 @@
     clearTimeout(blurTimeout);
   });
 })();
+const sortDropdown = document.querySelector('.sort-dropdown');
+  const orderDropdown = document.querySelector('.sort-order-dropdown');
+
+  sortDropdown.addEventListener('change', () => sortDropdown.form.submit());
+
 </script>

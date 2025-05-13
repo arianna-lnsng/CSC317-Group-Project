@@ -9,8 +9,22 @@ const Title = require('../models/Title');
 
 router.get('/', async (req, res) => {
     console.log('movies routes was triggered');///debug line
-    const { search } = req.query;
+    const { search, sortBy, sortOrder  } = req.query;
     let titles = [];
+    let sortOptions = {};
+
+  // Set sorting based on the user's input
+if (sortBy && ['name', 'releaseYear', 'averageRating'].includes(sortBy)) {
+    if (sortBy === 'averageRating') {
+        // For averageRating, reverse the sort order (highest to lowest)
+        sortOptions[sortBy] = sortOrder === 'asc' ? -1 : 1;  // Ascending becomes descending and vice versa
+    } else {
+        sortOptions[sortBy] = sortOrder === 'desc' ? -1 : 1; // Ascending or descending order for name and releaseYear
+    }
+} else {
+    sortOptions['name'] = 1; // Default sorting by name
+}
+
     if (search) {
         // 1. Try text search
         let query = { $text: { $search: search } };
@@ -24,7 +38,7 @@ router.get('/', async (req, res) => {
                     { name: regex },
                     { director: regex }
                 ]
-            }).sort({ name: 'asc' }).limit(50);
+            }).sort (sortOptions).limit(50);
         }
 
         // 3. If an exact (case-insensitive) match on name, redirect to detail page
@@ -41,9 +55,11 @@ router.get('/', async (req, res) => {
         }
     } else {
         // No search: show default list
-        titles = await Title.find().sort({ name: 'asc' }).limit(50);
+        titles = await Title.find().sort(sortOptions).limit(50);
     }
-    res.render('movies', { title: 'Movies', titles });
+    res.render('movies', { title: 'Movies', titles, search, sortBy, sortOrder } 
+
+    );
 });
 
 module.exports = router;
