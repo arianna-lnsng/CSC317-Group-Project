@@ -809,8 +809,8 @@ main {
   margin: 0;
 }
 .movies-page-container .search-bar {
-  max-width: 340px;
-  min-width: 180px;
+  max-width: 900px;
+  min-width: 250px;
   margin: 0;
   box-shadow: none;
   border-radius: var(--radius);
@@ -818,7 +818,7 @@ main {
   background: #fff;
 }
 .movies-page-container .search-bar input {
-  padding: 0.6rem 1rem;
+  padding: 0.9rem 1rem;
   font-size: 1rem;
   border: none;
   outline: none;
@@ -925,6 +925,34 @@ main {
     height: 135px;
   }
 }
+.watchlist-button {
+  display: inline-block;
+  background-color: #ff3c00; /* Bright Netflix-style red/orange */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.watchlist-button:hover {
+  background-color: #e03200;
+  transform: scale(1.03);
+}
+
+.watchlist-button:active {
+  transform: scale(0.98);
+}
+
+.watchlist-button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
 
 /* Professional Header & Navbar Redesign */
 .pro-navbar {

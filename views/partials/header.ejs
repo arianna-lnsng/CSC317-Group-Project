@@ -16,6 +16,7 @@
         <li><a href="/about" class="<%= path === '/about' ? 'active' : '' %>">About</a></li>
         <li><a href="/movies" class="<%= path === '/movies' ? 'active' : '' %>">Movies</a></li>
         <% if (isAuthenticated) { %>
+          <li><a href="/user/watchlist" class="<%= path === '/user/watchlist' ? 'active' : '' %>">Watchlist</a></li>
           <li><a href="/user/profile" class="<%= path === '/user/profile' ? 'active' : '' %>">Profile</a></li>
           <li><a href="/user/settings" class="<%= path === '/user/settings' ? 'active' : '' %>">Settings</a></li>
           <li><a href="/auth/logout" title="Logout" aria-label="Logout">Logout</a></li>

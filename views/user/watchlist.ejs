@@ -2,7 +2,7 @@
 
 <h1>My Watchlist</h1>
 <ul>
-  <% user.watchlist.forEach(t => { %>
+  <% watchlist.forEach(t => { %> <!-- Use 'watchlist' here -->
     <li>
       <a href="/titles/<%= t._id %>"><%= t.name %></a>
       <form method="POST" action="/titles/<%= t._id %>/remove">

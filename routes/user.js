@@ -7,6 +7,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const { isAuthenticated } = require('../middleware/auth');
+const listController = require('../controllers/listController');
 
 
 // Protect all user routes
@@ -49,16 +50,18 @@ router.get('/profile', async (req, res) => {
 // User watchlist page
 router.get('/watchlist', async (req, res) => {
   try {
-    const user = await User.findById(req.session.userId)
-      .populate('watchlist');
+    const user = await User.findById(req.session.userId).populate('watchlist');
     
     if (!user) {
       return res.redirect('/auth/login');
     }
-    
+
+    // Ensure watchlist is an empty array if not populated
+    const watchlist = user.watchlist || [];
+
     res.render('user/watchlist', {
       title: 'My Watchlist',
-      watchlist: user.watchlist
+      watchlist: watchlist, // Use the `watchlist` variable here
     });
   } catch (error) {
     console.error('Watchlist error:', error);
@@ -69,6 +72,30 @@ router.get('/watchlist', async (req, res) => {
     });
   }
 });
+// Add movie to watchlist
+router.post('/titles/:id/add-to-watchlist', async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId);  // Assuming you're using session for authentication
+    if (!user) {
+      return res.redirect('/auth/login');  // Redirect if user is not logged in
+    }
+
+    const movieId = req.params.id;
+
+    // Check if the movie is already in the watchlist
+    if (!user.watchlist.includes(movieId)) {
+      user.watchlist.push(movieId);  // Add the movie to the watchlist
+      await user.save();  // Save the updated user object
+    }
+
+    res.redirect(`/titles/${movieId}`);  // Redirect to the movie details page
+  } catch (error) {
+    console.error('Error adding movie to watchlist:', error);
+    res.redirect(`/titles/${req.params.id}`);  // Redirect back to the movie page in case of an error
+  }
+});
+
+
 // GET /user/settings - Render settings page
 router.get('/settings', async (req, res) => {
   try {
