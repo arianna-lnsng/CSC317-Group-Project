@@ -28,6 +28,7 @@ const { setLocals } = require('./middleware/locals');
 const { handleErrors } = require('./middleware/error-handler');
 
 const app = express();
+app.set('trust proxy', 1);
 
 // MongoDB connection with fault tolerance
 if (process.env.MONGODB_URI) {
