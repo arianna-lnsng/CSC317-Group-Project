@@ -988,18 +988,27 @@ main {
 }
 
 .brand-link {
-  color: var(--accent);
+  background: #fff !important;
+  color: #222 !important;
   font-size: 1.18rem;
   font-weight: 800;
   letter-spacing: -0.01em;
   text-decoration: none;
   padding: 0.2em 0.5em;
   border-radius: var(--radius);
-  transition: background 0.18s, color 0.18s;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 2px 8px rgba(75,95,165,0.07);
+  outline: none;
 }
-.brand-link.active, .brand-link:hover {
-  background: var(--gray-light);
-  color: var(--accent-light);
+.brand-link:focus {
+  outline: 3px solid #4b5fa5;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px #ffe066;
+}
+.brand-link .brand-text {
+  color: #222 !important;
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 .brand-text {
   font-weight: 800;

@@ -8,9 +8,8 @@
       <button type="submit">🔍</button>
       <!-- Sorting Dropdowns wrapped in the same form -->
     <div class="sort-options">
-      <!-- Sort by field -->
-      <label for="sortBy">Sort By:</label>
-      <select name="sortBy" id="sortBy" class="sort-dropdown" onchange="this.form.submit()">
+      <label for="sortBy" class="sort-label" style="font-weight:600;color:var(--primary);margin-right:0.5em;">Sort by</label>
+      <select name="sortBy" id="sortBy" class="sort-dropdown" aria-label="Sort movies by" onchange="this.form.submit()" style="padding:0.4em 1em;border-radius:var(--radius);border:1px solid var(--gray-medium);font-size:1em;">
         <option value="name" <%= sortBy === 'name' ? 'selected' : '' %>>Name</option>
         <option value="releaseYear" <%= sortBy === 'releaseYear' ? 'selected' : '' %>>Release Year</option>
         <option value="averageRating" <%= sortBy === 'averageRating' ? 'selected' : '' %>>Rating</option>
