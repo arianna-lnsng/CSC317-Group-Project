@@ -23,8 +23,22 @@ router.get('/:id', async (req, res) => {
 
         const reviews = await Review.find({ titleId: title._id }).populate('userId', 'username');
         const relatedTitles = await Title.find({ genre: title.genre, _id: { $ne: title._id } }).limit(4);
+        let userRating = null;
+        if (req.session.user) {
+            const rating = await Rating.findOne({ 
+                userId: req.session.user._id, 
+                titleId: title._id 
+            });
+            if (rating) {
+                userRating = rating.rating;
+            }
+        }
+        res.render('titles', { title, reviews, relatedTitles,
+             userRating,
+             csrfToken: req.csrfToken(),   // ✅ add this
+  user: req.session.user 
 
-        res.render('titles', { title, reviews, relatedTitles });
+         });
     } catch (err) {
         console.error('Error loading title page:', err);
         res.status(500).render('error', {

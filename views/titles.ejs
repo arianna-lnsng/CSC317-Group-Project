@@ -35,9 +35,10 @@
           };
         %>
         <% for (let i = 1; i <= 5; i++) { %>
-          <span class="star-input" data-value="<%= i %>" title="<%= labels[i] %>">★</span>
+          <span class="star-input <%= userRating && i <= userRating ? 'active' : '' %>" data-value="<%= i %>" title="<%= labels[i] %>">★</span>
         <% } %>
-        
+        <input type="hidden" name="rating" id="star-rating-value" value="<%= userRating || '' %>" required />
+
         </div>
         <input type="hidden" name="rating" id="star-rating-value" required />
         <button type="submit">Rate</button>
@@ -94,37 +95,42 @@
 <%- include('./partials/footer') %>
 
 <script>
-// Interactive star rating
-(function() {
-  const stars = document.querySelectorAll('.star-rating-input .star-input');
-  const valueInput = document.getElementById('star-rating-value');
-  let selected = 0;
-  stars.forEach((star, idx) => {
-    star.addEventListener('mouseenter', () => {
-      highlightStars(idx + 1);
-    });
-    star.addEventListener('mouseleave', () => {
-      highlightStars(selected);
-    });
-    star.addEventListener('click', () => {
-      selected = idx + 1;
-      valueInput.value = selected;
-      highlightStars(selected);
-    });
-  });
-  function highlightStars(n) {
-    stars.forEach((star, i) => {
-      star.classList.toggle('active', i < n);
-    });
-  }
-  // Prevent submit if no star selected
-  document.getElementById('star-rating-form').addEventListener('submit', function(e) {
-    if (!valueInput.value) {
-      e.preventDefault();
-      highlightStars(0);
-      stars.forEach(star => star.classList.add('shake'));
-      setTimeout(() => stars.forEach(star => star.classList.remove('shake')), 400);
+  (function() {
+    const stars = document.querySelectorAll('.star-rating-input .star-input');
+    const valueInput = document.getElementById('star-rating-value');
+    let selected = parseInt(valueInput.value) || 0;
+
+    function highlightStars(n) {
+      stars.forEach((star, i) => {
+        star.classList.toggle('active', i < n);
+      });
     }
-  });
-})();
+
+    stars.forEach((star, idx) => {
+      star.addEventListener('mouseenter', () => {
+        highlightStars(idx + 1);
+      });
+      star.addEventListener('mouseleave', () => {
+        highlightStars(selected);
+      });
+      star.addEventListener('click', () => {
+        selected = idx + 1;
+        valueInput.value = selected;
+        highlightStars(selected);
+      });
+    });
+
+    // Initialize stars based on existing rating
+    highlightStars(selected);
+
+    // Prevent submit if no star selected
+    document.getElementById('star-rating-form').addEventListener('submit', function(e) {
+      if (!valueInput.value) {
+        e.preventDefault();
+        highlightStars(0);
+        stars.forEach(star => star.classList.add('shake'));
+        setTimeout(() => stars.forEach(star => star.classList.remove('shake')), 400);
+      }
+    });
+  })();
 </script>
