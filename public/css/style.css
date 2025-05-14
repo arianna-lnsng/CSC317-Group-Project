@@ -809,8 +809,10 @@ main {
   margin: 0;
 }
 .movies-page-container .search-bar {
+  gap: 5rem;
+  align-items: center; 
   max-width: 900px;
-  min-width: 250px;
+  min-width: 200px;
   margin: 0;
   box-shadow: none;
   border-radius: var(--radius);
@@ -828,11 +830,12 @@ main {
   background: var(--accent);
   color: var(--text-light);
   border: none;
-  padding: 0 1.1rem;
+  padding: 0 1.3rem;
   font-weight: 600;
   cursor: pointer;
   border-radius: 0 var(--radius) var(--radius) 0;
   transition: background 0.2s;
+  height: 50px;
 }
 .movies-page-container .search-bar button:hover {
   background: var(--accent-light);
