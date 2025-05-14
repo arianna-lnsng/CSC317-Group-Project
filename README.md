@@ -11,9 +11,6 @@
 - **Damian Perez** (Backend Lead): Express routes, server-side validation, reviews/ratings logic.
 - **Arianna Lansang** (Data & Coordination): Database seeding, structure, and documentation.
 
-## Preview
-![Browse Movies UI](images/preview.jpg)
-
 ## Features
 - **Browse Films:** Card-style layout with posters, genres, years, and ratings.
 - **Search & Filter:** Search by title or director. Filter by genre, year, or rating.
