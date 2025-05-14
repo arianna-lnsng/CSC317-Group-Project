@@ -81,9 +81,10 @@ const generalLimiter = rateLimit({
 });
 
 const authLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 10,
-  message: 'Too many authentication attempts from this IP, please try again after an hour',
+  // Relaxed: 30 attempts per 15 minutes (was 10 per hour)
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 30,
+  message: 'Too many authentication attempts from this IP, please try again after 15 minutes',
   handler: (req, res, next, options) => {
     console.warn(`Auth Rate limit exceeded for IP: ${req.ip}`);
     res.status(options.statusCode).send(options.message);
