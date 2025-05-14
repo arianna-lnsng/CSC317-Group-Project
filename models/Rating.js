@@ -31,7 +31,15 @@ ratingSchema.post('save', async function() {
   const Title = mongoose.model('Title');
   const title = await Title.findById(this.titleId);
   if (title) {
-    await title.updateAverageRating(this.rating, true);
+    await title.updateAverageRating();
+  }
+});
+
+ratingSchema.post('remove', async function() {
+  const Title = mongoose.model('Title');
+  const title = await Title.findById(this.titleId);
+  if (title) {
+    await title.updateAverageRating();
   }
 });
 

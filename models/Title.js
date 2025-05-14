@@ -57,10 +57,16 @@ const titleSchema = new mongoose.Schema({
 titleSchema.index({ name: 'text', genre: 'text', director: 'text' });
 
 // Method to update average rating
-titleSchema.methods.updateAverageRating = async function(newRating, isNewRating) {
-  if (isNewRating) {
-    this.averageRating = ((this.averageRating * this.totalRatings) + newRating) / (this.totalRatings + 1);
-    this.totalRatings += 1;
+titleSchema.methods.updateAverageRating = async function() {
+  const Rating = require('./Rating');
+  const ratings = await Rating.find({ titleId: this._id });
+  if (ratings.length === 0) {
+    this.averageRating = 0;
+    this.totalRatings = 0;
+  } else {
+    const sum = ratings.reduce((acc, curr) => acc + curr.rating, 0);
+    this.averageRating = sum / ratings.length;
+    this.totalRatings = ratings.length;
   }
   await this.save();
 };
