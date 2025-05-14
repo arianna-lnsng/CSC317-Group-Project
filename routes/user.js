@@ -1,6 +1,7 @@
 /**
  * User routes for the application
- * 04-29-2025- Modified by Cielina Lubrino
+ * 05-12-2025- Modified by Harish varma
+ * 
  */
 
 const express = require('express');
@@ -74,13 +75,14 @@ router.get('/watchlist', async (req, res) => {
 });
 // Add movie to watchlist
 router.post('/titles/:title_id/add-to-watchlist', async (req, res) => {
+  
   try {
     const user = await User.findById(req.session.userId);  // Assuming you're using session for authentication
     if (!user) {
       return res.redirect('/auth/login');  // Redirect if user is not logged in
     }
 
-    const movieId = req.params.id;
+    const movieId = req.params.title_id;
 
     // Check if the movie is already in the watchlist
     if (!user.watchlist.includes(movieId)) {
@@ -94,6 +96,29 @@ router.post('/titles/:title_id/add-to-watchlist', async (req, res) => {
     res.redirect(`/titles/${req.params.id}`);  // Redirect back to the movie page in case of an error
   }
 });
+// Remove movie from watchlist
+router.post('/titles/:id/remove-from-watchlist', async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.redirect('/auth/login');
+    }
+
+    const movieId = req.params.id;
+
+    // Remove the movie from the watchlist
+    user.watchlist = user.watchlist.filter(
+      (id) => id.toString() !== movieId
+    );
+    await user.save();
+
+    res.redirect('/user/watchlist');
+  } catch (error) {
+    console.error('Error removing movie from watchlist:', error);
+    res.redirect('/user/watchlist');
+  }
+});
+
 
 
 // GET /user/settings - Render settings page

@@ -43,7 +43,7 @@
         <input type="hidden" name="rating" id="star-rating-value" required />
         <button type="submit">Rate</button>
       </form>
-      <form method="POST" action="/titles/<%= title._id %>/add-to-watchlist">
+      <form method="POST" action="/user/titles/<%= title._id %>/add-to-watchlist">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <button type="submit" class="watchlist-button">Add to Watchlist</button>
       </form>

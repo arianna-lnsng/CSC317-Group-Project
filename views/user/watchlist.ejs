@@ -1,15 +1,42 @@
 <%- include('../partials/header') %>
 
-<h1>My Watchlist</h1>
-<ul>
-  <% watchlist.forEach(t => { %> <!-- Use 'watchlist' here -->
-    <li>
-      <a href="/titles/<%= t._id %>"><%= t.name %></a>
-      <form method="POST" action="/titles/<%= t._id %>/remove">
-        <button>Remove</button>
-      </form>
-    </li>
-  <% }) %>
-</ul>
+<div class="movies-page-container">
+  <div class="movies-header-row">
+    <h1 class="movies-heading">My Watchlist</h1>
+  </div>
+
+  <% if (watchlist.length === 0) { %>
+    <p class="no-movies">Your watchlist is empty.</p>
+  <% } else { %>
+    <div class="movies-grid">
+      <% watchlist.forEach(movie => { %>
+        <div class="movie-card">
+          <a href="/titles/<%= movie._id %>">
+            <img src="<%= movie.imageUrl %>" alt="<%= movie.name %> poster" class="movie-card-poster" />
+          </a>
+          <div class="movie-card-info">
+            <a href="/titles/<%= movie._id %>" class="movie-card-title"><%= movie.name %></a>
+            <div class="movie-card-meta">
+              <span class="movie-card-genre"><%= movie.genre %></span>
+              <span class="movie-card-year">(<%= movie.releaseYear %>)</span>
+            </div>
+            <% if (movie.averageRating) { %>
+              <div class="movie-card-rating">
+                ★ <%= movie.averageRating.toFixed(1) %> / 5
+              </div>
+            <% } %>
+             <!-- Remove from Watchlist Button -->
+    <form method="POST" action="/user/titles/<%= movie._id %>/remove-from-watchlist" style="margin-top: 0.6rem;">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button type="submit" class="watchlist-button" style="background: #e74c3c; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer;">
+        Remove
+      </button>
+    </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
 
 <%- include('../partials/footer') %>

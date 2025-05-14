@@ -930,7 +930,7 @@ main {
 }
 .watchlist-button {
   display: inline-block;
-  background-color: #ff3c00; /* Bright Netflix-style red/orange */
+  background-color: #80e51b; /* Bright Netflix-style red/orange */
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -1207,4 +1207,3 @@ body.dark-mode main {
   color: #fff;
   font-weight: 600;
 }
-
