@@ -2,12 +2,14 @@
 node_modules/
 
 # Environment variables
-.env
+.env*
 
 # Logs
 logs
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Runtime data
 pids
@@ -19,16 +21,14 @@ pids
 lib-cov
 
 # Coverage directory used by tools like istanbul
-coverage
-
-# nyc test coverage
-.nyc_output
+coverage/
+.nyc_output/
 
 # Dependency directories
-.npm
+.npm/
 
 # Optional npm cache directory
-.npm
+.npm/
 
 # Optional eslint cache
 .eslintcache
@@ -40,18 +40,45 @@ coverage
 *.tgz
 
 # dotenv environment variable files
-.env
+.env*
 
 # Mac files
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows files
+Thumbs.db
+desktop.ini
 
 # VS Code files
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/
 *.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
 
 # Local History for Visual Studio Code
 .history/
+
+# Build output
+build/
+dist/
+
+# Backup files
+*.bak
+*.swp
+*.tmp
+*~
+
+# Miscellaneous
+*.orig
+
+# Public generated files (if any)
+public/js/bundle.js
+public/js/bundle.js.map
