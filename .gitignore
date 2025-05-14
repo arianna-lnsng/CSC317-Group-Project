@@ -86,5 +86,3 @@ public/js/bundle.js.map
 # Render files
 Procfile
 render.yaml
-package-lock.json
-package.json
