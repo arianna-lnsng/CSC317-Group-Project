@@ -3,25 +3,17 @@
 <div class="movies-page-container">
   <div class="movies-header-row">
     <h1 class="movies-heading">Browse Movies</h1>
-    <form class="search-bar" method="GET" action="/movies" autocomplete="off">
-      <input type="text" name="search" id="movies-search-input" placeholder="Search movies, directors..." value="<%= typeof search !== 'undefined' ? search : '' %>" autocomplete="off" />
-      <button type="submit">🔍</button>
-      <!-- Sorting Dropdowns wrapped in the same form -->
-    <div class="sort-options">
-      <label for="sortBy" class="sort-label" style="font-weight:600;color:var(--primary);margin-right:0.5em;">Sort by</label>
-      <select name="sortBy" id="sortBy" class="sort-dropdown" aria-label="Sort movies by" onchange="this.form.submit()" style="padding:0.4em 1em;border-radius:var(--radius);border:1px solid var(--gray-medium);font-size:1em;">
-        <option value="name" <%= sortBy === 'name' ? 'selected' : '' %>>Name</option>
-        <option value="releaseYear" <%= sortBy === 'releaseYear' ? 'selected' : '' %>>Release Year</option>
-        <option value="averageRating" <%= sortBy === 'averageRating' ? 'selected' : '' %>>Rating</option>
-      </select>
-
-      <!-- Sort order
-      <label for="sortOrder">Order:</label>
-      <select name="sortOrder" id="sortOrder" class="sort-order-dropdown" onchange="this.form.submit()">
-        <option value="asc" <%= sortOrder === 'asc' ? 'selected' : '' %>>Ascending</option>
-        <option value="desc" <%= sortOrder === 'desc' ? 'selected' : '' %>>Descending</option>
-      </select> -->
-    </div>
+    <form class="search-sort-bar" method="GET" action="/movies" autocomplete="off" style="display:flex;align-items:center;gap:1.2rem;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:0.5rem 1.2rem;min-width:320px;">
+      <input type="text" name="search" id="movies-search-input" placeholder="Search movies, directors..." value="<%= typeof search !== 'undefined' ? search : '' %>" autocomplete="off" style="flex:1;padding:0.6em 1em;border-radius:var(--radius);border:1px solid var(--gray-medium);font-size:1em;background:#f9fafb;" />
+      <div class="sort-options" style="display:flex;align-items:center;gap:0.5em;">
+        <label for="sortBy" class="sort-label" style="font-weight:600;color:var(--primary);margin-right:0.2em;">Sort by</label>
+        <select name="sortBy" id="sortBy" class="sort-dropdown" aria-label="Sort movies by" onchange="this.form.submit()" style="padding:0.4em 1em;border-radius:var(--radius);border:1px solid var(--gray-medium);font-size:1em;background:#f9fafb;">
+          <option value="name" <%= sortBy === 'name' ? 'selected' : '' %>>Name</option>
+          <option value="releaseYear" <%= sortBy === 'releaseYear' ? 'selected' : '' %>>Release Year</option>
+          <option value="averageRating" <%= sortBy === 'averageRating' ? 'selected' : '' %>>Rating</option>
+        </select>
+      </div>
+      <button type="submit" style="background:var(--accent);color:var(--text-light);border:none;padding:0.5em 1.3em;border-radius:var(--radius);font-weight:600;font-size:1em;transition:background 0.2s;">Search</button>
     </form>
     <div id="search-suggestions" class="autocomplete-suggestions"></div>
   </div>
