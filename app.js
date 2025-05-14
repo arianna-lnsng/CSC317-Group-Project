@@ -132,11 +132,19 @@ if (process.env.MONGODB_URI) {
   console.warn('Using memory session store');
 }
 
-app.use(session(sessionConfig));
+app.use(session({
+  ...sessionConfig,
+  cookie: {
+    ...sessionConfig.cookie,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'None', // Important for cross-domain cookie sharing
+    domain: process.env.NODE_ENV === 'production' ? '.render.com' : undefined, // Set for production
+  }
+}));
 
 // CSRF Protection with fallback
 try {
-  app.use(csrf({ cookie: false }));
+  app.use(csrf({ cookie: true }));
 
   app.use((req, res, next) => {
     try {

@@ -73,7 +73,7 @@ router.get('/watchlist', async (req, res) => {
   }
 });
 // Add movie to watchlist
-router.post('/titles/:id/add-to-watchlist', async (req, res) => {
+router.post('/titles/:title_id/add-to-watchlist', async (req, res) => {
   try {
     const user = await User.findById(req.session.userId);  // Assuming you're using session for authentication
     if (!user) {
