@@ -82,3 +82,9 @@ dist/
 # Public generated files (if any)
 public/js/bundle.js
 public/js/bundle.js.map
+
+# Render files
+Procfile
+render.yaml
+package-lock.json
+package.json
