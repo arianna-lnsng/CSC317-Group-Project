@@ -28,7 +28,6 @@ const { setLocals } = require('./middleware/locals');
 const { handleErrors } = require('./middleware/error-handler');
 
 const app = express();
-app.set('trust proxy', 1);
 
 // MongoDB connection with fault tolerance
 if (process.env.MONGODB_URI) {
@@ -81,10 +80,9 @@ const generalLimiter = rateLimit({
 });
 
 const authLimiter = rateLimit({
-  // Relaxed: 30 attempts per 15 minutes (was 10 per hour)
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 30,
-  message: 'Too many authentication attempts from this IP, please try again after 15 minutes',
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  message: 'Too many authentication attempts from this IP, please try again after an hour',
   handler: (req, res, next, options) => {
     console.warn(`Auth Rate limit exceeded for IP: ${req.ip}`);
     res.status(options.statusCode).send(options.message);
@@ -102,20 +100,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Determine environment
+const isProduction = process.env.NODE_ENV === 'production';
+
 // Session configuration
 let sessionConfig = {
   secret: process.env.SESSION_SECRET || process.env.JWT_SECRET || 'a_default_fallback_secret_change_this',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24,
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'None'
+    secure: isProduction, // secure only in production (https)
+    sameSite: isProduction ? 'None' : 'Lax', // None for cross-site in prod, Lax locally
+    domain: isProduction ? '.render.com' : undefined
   }
 };
 
-// Configure session store
+// Configure session store if MongoDB URI is available
 if (process.env.MONGODB_URI) {
   try {
     sessionConfig.store = MongoStore.create({
@@ -134,15 +136,8 @@ if (process.env.MONGODB_URI) {
   console.warn('Using memory session store');
 }
 
-app.use(session({
-  ...sessionConfig,
-  cookie: {
-    ...sessionConfig.cookie,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'None', // Important for cross-domain cookie sharing
-    domain: process.env.NODE_ENV === 'production' ? '.render.com' : undefined, // Set for production
-  }
-}));
+// Use session middleware ONCE with the full config
+app.use(session(sessionConfig));
 
 // CSRF Protection with fallback
 try {

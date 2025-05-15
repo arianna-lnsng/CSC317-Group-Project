@@ -71,7 +71,7 @@
     <form class="review-form" action="/titles/<%= title._id %>/reviews" method="POST">
       <input type="text" name="reviewTitle" placeholder="Review Title" required />
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-      <input type="hidden" name="userId" value="<%= user._id %>" />
+<input type="hidden" name="userId" value="<%= user ? user._id : '' %>" />
       <textarea name="content" placeholder="Your review..." required></textarea>
       <button type="submit">Post Review</button>
     </form>
