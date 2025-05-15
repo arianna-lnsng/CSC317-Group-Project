@@ -1,6 +1,7 @@
 # After the Credits - Your Digital Film Community
 
 ![Preview](images/preview.jpg)
+[![Live on Render](https://img.shields.io/badge/Live%20Site-Render-blue?logo=render)](https://csc317-group-a.onrender.com)
 
 ## Overview
 *After the Credits* is a modern film review and discovery platform where cinephiles can browse, rate, and discuss movies. Built with Node.js, Express, MongoDB, and EJS, it features a responsive, card-based UI and robust backend API. Users can search, filter, review, and rate films, as well as manage a personal watchlist.
@@ -91,52 +92,4 @@ CSC317-Group-Project/
    node utils/seeders/seed.js
    ```
 5. Start the development server:
-   ```bash
-   npm run dev
    ```
-6. Open your browser at `http://localhost:3000`
-
-### Deployment (Render)
-- See `render.yaml` and `Procfile` for deployment configuration.
-- Add environment variables in Render dashboard as above.
-- Use `npm install` as build command and `node app.js` as start command.
-
-### MongoDB Atlas Setup
-- Create a free cluster, user, and network access as described above.
-- Add your connection string to `.env` and Render dashboard.
-
-## API Documentation
-
-### Models
-- **Title:** name, director, duration, imageUrl, genre, releaseYear, averageRating, totalRatings, keywords
-- **Review:** titleId, userId, reviewTitle, content, rating, createdAt, updatedAt
-- **Rating:** userId, titleId, rating, createdAt
-- **User:** username, email, password, watchlist, filmsWatched, createdAt
-
-### REST Endpoints (routes/api/)
-- `GET /api/titles` — List/search/filter films
-- `GET /api/titles/:id` — Get film details
-- `GET /api/titles/:id/similar` — Similar films
-- `GET /api/titles/:id/reviews` — Reviews for a film
-- `GET /api/titles/:id/ratings` — Rating stats for a film
-- `POST /api/titles` — Add a film (auth required)
-- `PUT /api/titles/:id` — Update a film (auth required)
-- `DELETE /api/titles/:id` — Delete a film (auth required)
-- `GET /api/reviews` — All reviews
-- `POST /api/reviews` — Add review (auth required)
-- `PUT /api/reviews/:id` — Edit review (owner only)
-- `DELETE /api/reviews/:id` — Delete review (owner only)
-- `POST /api/ratings` — Rate a film (auth required)
-- `GET /api/ratings/user/:titleId` — User's rating for a film
-- `GET /api/ratings/title/:titleId` — Average rating for a film
-- `GET /api/ratings/title/:titleId/all` — All ratings for a film
-- `DELETE /api/ratings/:titleId` — Remove user's rating (auth required)
-- `POST /api/lists/add` — Add to watchlist (auth required)
-- `POST /api/lists/remove` — Remove from watchlist (auth required)
-- `GET /api/lists/watchlist` — User's watchlist (auth required)
-- `GET /api/lists/check/watchlist/:titleId` — Check if in watchlist (auth required)
-
-### Authentication & Validation
-- Auth required for user actions (session-based)
-- Data validation for all models and endpoints
-- Consistent error format: `{ "error": "Error message here" }`
